@@ -1,1 +1,1 @@
-/* This is a dummy text file */
+/*"Testing for special characters"*/
