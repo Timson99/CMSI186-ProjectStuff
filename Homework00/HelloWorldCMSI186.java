@@ -1,6 +1,6 @@
 /** @HelloWorldCMSI186.java    1.0.0     2018-01-11  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *  File          :  HelloWorldCMSI186.java
- *  Purpose       :  Print "Hello, World!!!!!";
+ *  Purpose       :  Print "Hello, World!!!!!"
  *  Author        :  Timothy Herrmann
  *  Description   :  N/A
  *  Notes         :  None
