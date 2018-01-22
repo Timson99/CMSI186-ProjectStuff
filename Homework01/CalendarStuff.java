@@ -73,9 +73,9 @@ public class CalendarStuff {
    * @return         long containing number of days in referenced month of the year
    */
    public static long daysInMonth( long month, long year ) {
-        if(isLeapYear(year) && (month - 1 == FEBRUARY)) { //Checks if month in question is a February during a Leap Year
+        if(isLeapYear(year) && (month - 1 == FEBRUARY))   //Checks if month in question is a February during a Leap Year
             return (days[(int)month - 1] + 1);            //Returns days in a regular February plus 1, to account for a leap day
-        }
+        
         else
             return (days[(int)month - 1]);
    }
@@ -105,8 +105,8 @@ public class CalendarStuff {
    * @return          int    -1/0/+1 if first date is less than/equal to/greater than second
    */
    public static int compareDate( long month1, long day1, long year1, long month2, long day2, long year2 ) {
-      boolean yearGreaterOrEqual = year1 >= year2;
-      boolean monthGreaterOrEqual = month1 >= month2;
+      boolean yearGreaterOrEqual = year1 >= year2; //Variable to store whether or not the first year is greater than the second year
+      boolean monthGreaterOrEqual = month1 >= month2; //Variable to store whether or not the first month is greater than the second month
       
       if(dateEquals(month1, day1, year1, month2, day2, year2))
           return 0;
@@ -131,7 +131,7 @@ public class CalendarStuff {
         if((year >= 0) && (month - 1 >= JANUARY && month - 1 <= DECEMBER) && ( (day >= 1) && day <= days[ (int)(month - 1) ] ))
             return true;
         else 
-            return false;
+            return false; 
    }
 
   /**
@@ -141,18 +141,18 @@ public class CalendarStuff {
    */
    public static String toMonthString( int month ) {
       switch( month - 1 ) {
-         case 0: return "January";
-         case 1: return "February";
-         case 2: return "March";
-         case 3: return "April";
-         case 4: return "May";
-         case 5: return "June";
-         case 6: return "July";
-         case 7: return "August";
-         case 8: return "September";
-         case 9: return "October";
-         case 10:return "November";
-         case 11:return "December";
+         case JANUARY:   return "January";
+         case FEBRUARY:  return "February";
+         case MARCH:     return "March";
+         case APRIL:     return "April";
+         case MAY:       return "May";
+         case JUNE:      return "June";
+         case JULY:      return "July";
+         case AUGUST:    return "August";
+         case SEPTEMBER: return "September";
+         case OCTOBER:   return "October";
+         case NOVEMBER:  return "November";
+         case DECEMBER:  return "December";
          default: throw new IllegalArgumentException( "Illegal month value given to 'toMonthString()'." );
       }
    }
@@ -164,13 +164,13 @@ public class CalendarStuff {
    */
    public static String toDayOfWeekString( int day ) {
       switch( day - 1 ) {
-         case 0: return "Sunday";
-         case 1: return "Monday";
-         case 2: return "Tuesday";
-         case 3: return "Wednesday";
-         case 4: return "Thursday";
-         case 5: return "Friday";
-         case 6: return "Saturday";
+         case SUNDAY: return "Sunday";
+         case MONDAY: return "Monday";
+         case TUESDAY: return "Tuesday";
+         case WEDNESDAY: return "Wednesday";
+         case THURSDAY: return "Thursday";
+         case FRIDAY: return "Friday";
+         case SATURDAY: return "Saturday";
          default: throw new IllegalArgumentException( "Illegal day value given to 'toDayOfWeekString()'." );
       }
    }
@@ -185,7 +185,59 @@ public class CalendarStuff {
    * @param    year2  long   containing four-digit year
    * @return          long   count of total number of days
    */
+   
+   public static long daysInYear(long year) {
+       if(isLeapYear(year))
+           return 366;
+       else 
+           return 365;
+       
+   }
+   public static long dayOfTheYear(long month, long day, long year) {
+        long dayOfTheYear = 0;
+                
+        for(int m = 0; m < month - 1; m++) {
+            
+            dayOfTheYear += daysInMonth(m + 1, year);
+        }
+        dayOfTheYear += day;
+        return dayOfTheYear;
+       
+   }
    public static long daysBetween( long month1, long day1, long year1, long month2, long day2, long year2 ) {
+       long dayCount = 0;
+       long dayOfYearOne = dayOfTheYear(month1, day1, year1);
+       long dayOfYearTwo = dayOfTheYear(month2, day2, year2);
+       
+       if(year1==year2)
+           return Math.abs(dayOfYearOne - dayOfYearTwo);
+       
+       long yearDifference = Math.abs(year2 - year1);
+       
+       if(year2 > year1) {
+           dayCount += daysInYear(year1) - dayOfYearOne;
+           for(int y = 1; y < yearDifference; y++) {
+                dayCount += daysInYear(y+year1);
+           }
+           dayCount += dayOfYearTwo;
+           return dayCount; 
+       }           
+       else {
+           dayCount += daysInYear(year2) - dayOfYearTwo;
+           for(int y = 1; y < yearDifference; y++) {
+                dayCount += daysInYear(y+year2);
+           }
+           dayCount += dayOfYearOne;
+           return dayCount;   
+       }
+   }
+   
+   public static long daysBetweeen( long month1, long day1, long year1, long month2, long day2, long year2 ) {
+        if(!(isValidDate(month1, day1, year1)) || !(isValidDate(month2, day2, year2))) {
+            System.out.println("An invalid date cannot be input");
+            return -1;
+        }
+   
         long dayCount = 0;
         long[] greaterDate;
         long[] lesserDate;
@@ -220,8 +272,8 @@ public class CalendarStuff {
             dayCount += greaterDate[1] - lesserDate[1];
             markedDate = new long[] {greaterDate[0], greaterDate[1]}; //-Since months match, the markedDate is the date with the higher day number
         }
-        /*  -
-          *  -
+        /*  -Else statement executes if days are equal or months are unequal
+          *  -Else statement corrects for month and day regardless of year
           *  -
           */
         else {
@@ -242,11 +294,11 @@ public class CalendarStuff {
                 markedDate = new long[] {greaterDate[0], greaterDate[1]};
                 dayCount += greaterDate[1];
             }
-            /*  -
+            /*  -else if statement executes when the overall greater date has a smaller month value
                *  -
                *  -
                */
-            if(greaterDate[0] < lesserDate[0]) {
+            else if(greaterDate[0] < lesserDate[0]) {
                 long monthCounter = greaterDate[0];
                 long monthDifference = lesserDate[0] - greaterDate[0];
                 dayCount -= daysInMonth(greaterDate[0], greaterDate[2]) - greaterDate[1];
@@ -263,18 +315,18 @@ public class CalendarStuff {
             else
                 markedDate = new long[] {greaterDate[0], greaterDate[1]};
         }
-        /*  -
-          *  -
-          *  -
+        /*  -This following code deals exclusively with days between years, assuming that days between different months and month days have been counted already.
+          *  -If Statement executes if there is a difference in the two date's years.
           */
         if(greaterDate[2] != lesserDate[2]) {            
             int yearDifference = (int)(greaterDate[2] - lesserDate[2]);
             
-            /*  -
-               *  -
-               *  -
+            /* --If the marked date is earlier than February 28th, this if statement will run
+               *  -Adds 366 days if the year being jumped up FROM is a leap year
+               *  -Adds 365 days if the year being jumped up FROM is NOT a leap year
                */
-            if(compareDate(markedDate[0], markedDate[1], greaterDate[2], FEBRUARY, days[FEBRUARY], greaterDate[2]) == -1) {
+            if(compareDate(markedDate[0], markedDate[1], greaterDate[2], FEBRUARY + 1, days[FEBRUARY], greaterDate[2]) == -1) {
+  
                 for(int y = 0; y < yearDifference; y++) {
                     if (isLeapYear(lesserDate[2] + y))
                         dayCount += 366;
@@ -282,11 +334,12 @@ public class CalendarStuff {
                         dayCount += 365;
                 }
             }
-            /*  -
-               *  -
-               *  -
+            /*  -If the marked date is February 28th or later, this else statement will run
+               *  -Adds 366 days if the year being jumped up TO is a leap year
+               *  -Adds 365 days if the year being jumped up TO is NOT a leap year
                */
             else {
+                
                 for(int y = 0; y < yearDifference; y++) {
                     if (isLeapYear(lesserDate[2] + 1 + y))
                         dayCount += 366;
