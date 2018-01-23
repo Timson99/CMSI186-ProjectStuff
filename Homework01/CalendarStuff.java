@@ -1,4 +1,4 @@
-/** @CalendarStuff.java  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/** CalendarStuff.java  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *  File          :  CalendarStuff.java
  *  Purpose       :  
  *  Date          :  2018-01-16 
@@ -47,7 +47,7 @@ public class CalendarStuff {
    /**
    * Constant stores the amount of days in a typical year
    */
-   private static int DAYS_IN_YEAR = 365;
+   private static final int DAYS_IN_YEAR = 365;
    
   /**
    * An array containing the number of days in each month.
@@ -58,7 +58,7 @@ public class CalendarStuff {
    * The constructor for the class
    */
    public CalendarStuff() {
-      System.out.println( "Constructor was called" );  //Tells User if CalendarStuff class was constructed
+      System.out.println( "Constructor was called" );  //Tells user if CalendarStuff class was constructed
    }
 
   /**
@@ -68,7 +68,7 @@ public class CalendarStuff {
    * @return         boolean which is true if the parameter is a leap year
    */
    public static boolean isLeapYear( long year ) {
-      return ((year%400 == 0) || (year%4 == 0) && !(year % 100 == 0)); //Are these magic numbers?
+      return ((year%400 == 0) || (year%4 == 0) && !(year % 100 == 0)); //Calculation of Leap Year
    }
 
   /**
@@ -80,7 +80,6 @@ public class CalendarStuff {
    public static long daysInMonth( long month, long year ) {
         if(isLeapYear(year) && (month - 1 == FEBRUARY))   //Checks if month in question is a February during a Leap Year
             return (days[(int)month - 1] + 1);            //Returns days in a regular February plus 1, to account for a leap day
-        
         else
             return (days[(int)month - 1]);
    }
@@ -169,13 +168,13 @@ public class CalendarStuff {
    */
    public static String toDayOfWeekString( int day ) {
       switch( day - 1 ) {
-         case SUNDAY: return "Sunday";
-         case MONDAY: return "Monday";
-         case TUESDAY: return "Tuesday";
+         case SUNDAY:    return "Sunday";
+         case MONDAY:    return "Monday";
+         case TUESDAY:   return "Tuesday";
          case WEDNESDAY: return "Wednesday";
-         case THURSDAY: return "Thursday";
-         case FRIDAY: return "Friday";
-         case SATURDAY: return "Saturday";
+         case THURSDAY:  return "Thursday";
+         case FRIDAY:    return "Friday";
+         case SATURDAY:  return "Saturday";
          default: throw new IllegalArgumentException( "Illegal day value given to 'toDayOfWeekString()'." );
       }
    }
@@ -189,27 +188,23 @@ public class CalendarStuff {
        if(isLeapYear(year))
            return DAYS_IN_YEAR + 1;
        else 
-           return DAYS_IN_YEAR;
-       
+           return DAYS_IN_YEAR;   
    }
    
    /**
    * A method to returns the amount of days that have passed in the year up till the given date
    * @param    month long   containing month number, starting with "1" for "January"
-   * @param    day1  long   containing day number
+   * @param    day  long   containing day number
    * @param    year  long   containing four-digit year
    * @return         long   The day of the year of the given date
    */
    public static long dayOfTheYear(long month, long day, long year) {
-        long dayOfTheYear = 0;
-                
+        long dayOfTheYear = 0; //Initialize counter varible called dayOfTheYear
         for(int m = 0; m < month - 1; m++) {
-            
-            dayOfTheYear += daysInMonth(m + 1, year);
+            dayOfTheYear += daysInMonth(m + 1, year); //Months in between January and variable month are added one by one to dayOfTheYear counter
         }
-        dayOfTheYear += day;
-        return dayOfTheYear;
-       
+        dayOfTheYear += day; 
+        return dayOfTheYear;   
    }
    
    /**
@@ -223,30 +218,29 @@ public class CalendarStuff {
    * @return          long   count of total number of days
    */
    public static long daysBetween( long month1, long day1, long year1, long month2, long day2, long year2 ) {
-       long dayCount = 0;
-       long dayOfYearOne = dayOfTheYear(month1, day1, year1);
+       long dayCount = 0; //Initialize count of days between two dates
+       long yearDifference = Math.abs(year2 - year1); //Saves difference between years
+       long dayOfYearOne = dayOfTheYear(month1, day1, year1); 
        long dayOfYearTwo = dayOfTheYear(month2, day2, year2);
        
-       if(year1==year2)
+       if(year1==year2) 
            return Math.abs(dayOfYearOne - dayOfYearTwo);
        
-       long yearDifference = Math.abs(year2 - year1);
-       
-       if(year2 > year1) {
-           dayCount += daysInYear(year1) - dayOfYearOne;
+       if(year1 < year2) {
+           dayCount += daysInYear(year1) - dayOfYearOne;  
            for(int y = 1; y < yearDifference; y++) {
-                dayCount += daysInYear(y+year1);
+                dayCount += daysInYear(y+year1); //If in between years exist, days in in-between years are added to dayCount variable
            }
-           dayCount += dayOfYearTwo;
+           dayCount += dayOfYearTwo; 
            return dayCount; 
-       }           
-       else {
-           dayCount += daysInYear(year2) - dayOfYearTwo;
+       }         
+       else { 
+           dayCount += daysInYear(year2) - dayOfYearTwo; 
            for(int y = 1; y < yearDifference; y++) {
-                dayCount += daysInYear(y+year2);
+                dayCount += daysInYear(y+year2); //If in between years exist, days in in-between years are added to dayCount variable
            }
-           dayCount += dayOfYearOne;
+           dayCount += dayOfYearOne; 
            return dayCount;   
        }
-    }
+   }
 }
