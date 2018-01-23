@@ -44,11 +44,16 @@ public class CalendarStuff {
    private static final int NOVEMBER   = OCTOBER   + 1;
    private static final int DECEMBER   = NOVEMBER  + 1;
   
+   /**
+   * Constant stores the amount of days in a typical year
+   */
+   private static int DAYS_IN_YEAR = 365;
+   
   /**
    * An array containing the number of days in each month.
    */
    private static int[] days = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-
+   
   /**
    * The constructor for the class
    */
@@ -176,23 +181,25 @@ public class CalendarStuff {
    }
 
   /**
-   * A method to return a count of the total number of days between two valid dates
-   * @param    month1 long   containing month number, starting with "1" for "January"
-   * @param    day1   long   containing day number
-   * @param    year1  long   containing four-digit year
-   * @param    month2 long   containing month number, starting with "1" for "January"
-   * @param    day2   long   containing day number
-   * @param    year2  long   containing four-digit year
-   * @return          long   count of total number of days
+   * A method to return the amount of days in the given year
+   * @param    year   long   containing four-digit year
+   * @return          long   total amount of days in a year
    */
-   
    public static long daysInYear(long year) {
        if(isLeapYear(year))
-           return 366;
+           return DAYS_IN_YEAR + 1;
        else 
-           return 365;
+           return DAYS_IN_YEAR;
        
    }
+   
+   /**
+   * A method to returns the amount of days that have passed in the year up till the given date
+   * @param    month long   containing month number, starting with "1" for "January"
+   * @param    day1  long   containing day number
+   * @param    year  long   containing four-digit year
+   * @return         long   The day of the year of the given date
+   */
    public static long dayOfTheYear(long month, long day, long year) {
         long dayOfTheYear = 0;
                 
@@ -204,6 +211,17 @@ public class CalendarStuff {
         return dayOfTheYear;
        
    }
+   
+   /**
+   * A method to return a count of the total number of days between two valid dates
+   * @param    month1 long   containing month number, starting with "1" for "January"
+   * @param    day1   long   containing day number
+   * @param    year1  long   containing four-digit year
+   * @param    month2 long   containing month number, starting with "1" for "January"
+   * @param    day2   long   containing day number
+   * @param    year2  long   containing four-digit year
+   * @return          long   count of total number of days
+   */
    public static long daysBetween( long month1, long day1, long year1, long month2, long day2, long year2 ) {
        long dayCount = 0;
        long dayOfYearOne = dayOfTheYear(month1, day1, year1);
@@ -230,124 +248,5 @@ public class CalendarStuff {
            dayCount += dayOfYearOne;
            return dayCount;   
        }
-   }
-   
-   public static long daysBetweeen( long month1, long day1, long year1, long month2, long day2, long year2 ) {
-        if(!(isValidDate(month1, day1, year1)) || !(isValidDate(month2, day2, year2))) {
-            System.out.println("An invalid date cannot be input");
-            return -1;
-        }
-   
-        long dayCount = 0;
-        long[] greaterDate;
-        long[] lesserDate;
-        long[] markedDate; //Array meant to hold the date's month and day that furthest through the calendar, regardless of year.
-     
-        /* -This switch statement determines which overall date is larger. 
-          *  -Statement initializes lesserDate and greaterDate with the appropriate date
-          */
-        switch(compareDate(month1, day1, year1, month2, day2, year2)) {
-            case 0: 
-                return 0;
-            case 1: 
-                greaterDate = new long[] {month1, day1, year1};
-                lesserDate = new long[] {month2, day2, year2};
-                break;
-            case -1:
-                lesserDate = new long[] {month1, day1, year1};
-                greaterDate = new long[] {month2, day2, year2};
-                break;
-            default: 
-                greaterDate = new long[] {0,0,0};
-                lesserDate = new long[] {0,0,0};
-                System.out.println("Error in compareDate method");
-                break;
-        }
-        
-        /*  -Checks to see if the two dates have equal months and unequal days
-          *  -If so, the positive difference is added to the dayCount variable 
-          */
-        if(greaterDate[1] != lesserDate[1] && greaterDate[0] == lesserDate[0]) {
-           
-            dayCount += greaterDate[1] - lesserDate[1];
-            markedDate = new long[] {greaterDate[0], greaterDate[1]}; //-Since months match, the markedDate is the date with the higher day number
-        }
-        /*  -Else statement executes if days are equal or months are unequal
-          *  -Else statement corrects for month and day regardless of year
-          *  -
-          */
-        else {
-            /*  -
-                *  - 
-                *  -
-                */
-            if(greaterDate[0] > lesserDate[0]) {
-                long monthCounter = lesserDate[0];
-                long monthDifference = greaterDate[0] - lesserDate[0];
-                dayCount += daysInMonth(lesserDate[0], lesserDate[2]) - lesserDate[1];
-                monthCounter++;
-                
-                for(int m = 0; m < monthDifference - 1; m++) {
-                    dayCount += daysInMonth(monthCounter, lesserDate[2]);
-                    monthCounter++;
-                }
-                markedDate = new long[] {greaterDate[0], greaterDate[1]};
-                dayCount += greaterDate[1];
-            }
-            /*  -else if statement executes when the overall greater date has a smaller month value
-               *  -
-               *  -
-               */
-            else if(greaterDate[0] < lesserDate[0]) {
-                long monthCounter = greaterDate[0];
-                long monthDifference = lesserDate[0] - greaterDate[0];
-                dayCount -= daysInMonth(greaterDate[0], greaterDate[2]) - greaterDate[1];
-                monthCounter++;
-                
-                for(int m = 0; m < monthDifference - 1; m++) {
-                    
-                    dayCount -= daysInMonth(monthCounter, greaterDate[2]);
-                    monthCounter++;
-                }
-                markedDate = new long[] {lesserDate[0], lesserDate[1]};
-                dayCount -= lesserDate[1];
-            }
-            else
-                markedDate = new long[] {greaterDate[0], greaterDate[1]};
-        }
-        /*  -This following code deals exclusively with days between years, assuming that days between different months and month days have been counted already.
-          *  -If Statement executes if there is a difference in the two date's years.
-          */
-        if(greaterDate[2] != lesserDate[2]) {            
-            int yearDifference = (int)(greaterDate[2] - lesserDate[2]);
-            
-            /* --If the marked date is earlier than February 28th, this if statement will run
-               *  -Adds 366 days if the year being jumped up FROM is a leap year
-               *  -Adds 365 days if the year being jumped up FROM is NOT a leap year
-               */
-            if(compareDate(markedDate[0], markedDate[1], greaterDate[2], FEBRUARY + 1, days[FEBRUARY], greaterDate[2]) == -1) {
-  
-                for(int y = 0; y < yearDifference; y++) {
-                    if (isLeapYear(lesserDate[2] + y))
-                        dayCount += 366;
-                    else
-                        dayCount += 365;
-                }
-            }
-            /*  -If the marked date is February 28th or later, this else statement will run
-               *  -Adds 366 days if the year being jumped up TO is a leap year
-               *  -Adds 365 days if the year being jumped up TO is NOT a leap year
-               */
-            else {
-                
-                for(int y = 0; y < yearDifference; y++) {
-                    if (isLeapYear(lesserDate[2] + 1 + y))
-                        dayCount += 366;
-                    else
-                        dayCount += 365;
-                }
-            }        
-        }
-        return dayCount;
-   }
+    }
 }
