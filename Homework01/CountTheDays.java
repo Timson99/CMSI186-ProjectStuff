@@ -18,9 +18,9 @@
 public class CountTheDays {
      
     public static void main(String args[]) {
-        
-        if( args.length == 0 ) {
-            System.out.println( "\n  Run with command line arguments. Please.\n" );
+       
+        if(args.length < 6) {
+            System.out.println( "\n  Run with six command line arguments. Please.\n" );
             System.exit( 0 );
         }
         
@@ -31,12 +31,23 @@ public class CountTheDays {
         long day2   = Long.parseLong(args[4]);
         long year2  = Long.parseLong(args[5]);
         
+        if(!(CalendarStuff.isValidDate(month1, day1, year1)) || !(CalendarStuff.isValidDate(month2, day2, year2))) {
+            System.out.println("An invalid date cannot be input");
+            System.exit( 0 );
+        } 
+        
         long daysBetween = CalendarStuff.daysBetween(month1, day1, year1, month2, day2, year2);
         
         switch((int)daysBetween){
-            case 0: System.out.println("\n  There are no days between those two dates.\n");
-            case 1: System.out.println("\n  There is one day between those two dates.\n");
-            default: System.out.println("\n  There are " + daysBetween + " days between those two dates.\n");
+            case 0: 
+                System.out.println("\n  There are no days between those two dates.\n"); 
+                break;
+            case 1: 
+                System.out.println("\n  There is one day between those two dates.\n"); 
+                break;
+            default: 
+                System.out.println("\n  There are " + daysBetween + " days between those two dates.\n"); 
+                break;
         }
     }
 }
