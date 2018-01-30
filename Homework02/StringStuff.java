@@ -3,7 +3,8 @@
  *  Purpose       :  
  *  Date          :  2018-01-16 
  *  Author        :  Timothy Herrmann
- *  Description   :  N/A  
+ *  Description   :  Contains methods that detect vowels, discriminate between even and odd characters in strings, and reverse
+ *                   inputed string values.
  *  Notes         :  None
  *  Warnings      :  None
  *  Exceptions    :  None
@@ -61,12 +62,11 @@ public class StringStuff {
    */
    public static boolean isPalindrome( String str ) {
        String s = str.toLowerCase();
-       int halfString =(s.length())/2;
+       int halfString =(s.length())/2; //Loop runs for every non-middle character (if such a character exists) 
        for(int x =0; x < halfString; x++) {
-        if(s.charAt(x) != s.charAt(s.length()-x-1)) 
+        if(s.charAt(x) != s.charAt(s.length()-x-1)) //Checks matching beginning and ending char for equivalence 
             return false;
        }
-       
       return true;
    }
 
@@ -83,7 +83,7 @@ public class StringStuff {
       String evensOnly = "";
       for(int x = 0; x < s.length(); x++) {
           if(evenLetters.indexOf(s.substring(x, x+1)) != -1) 
-              evensOnly = evensOnly + s.substring(x, x+1);     
+              evensOnly = evensOnly + s.substring(x, x+1);  //Every loop adds the next character, under the condition the character is even   
        }
        return evensOnly;
    }
@@ -100,7 +100,7 @@ public class StringStuff {
       String oddsOnly = "";
       for(int x = 0; x < s.length(); x++) {
           if(oddLetters.indexOf(s.substring(x, x+1)) != -1) 
-              oddsOnly = oddsOnly + s.substring(x, x+1);     
+              oddsOnly = oddsOnly + s.substring(x, x+1); //Every loop adds the next character, under the condition the character is odd      
        }
        return oddsOnly;
    }
@@ -152,24 +152,11 @@ public class StringStuff {
    public static String reverse( String s ) {
       String reversedString = "";
       for(int x = 0; x < s.length(); x++) {
-          reversedString = s.substring(x, x+1) + reversedString;
+          reversedString = s.substring(x, x+1) + reversedString; //Add reveresedString to the end to flip order of characters
       }
       return reversedString; 
    }
    
-   public static String removeDupes( String s ) {
-       String noDupes = "";
-       String duplicates = "";
-       for(int x = 0; x < s.length(); x++) {
-           if(duplicates.indexOf((s.substring(x, x+1)).toUpperCase()) == -1) {
-                noDupes = noDupes +s.substring(x, x+1);
-                duplicates = duplicates + s.substring(x, x+1).toUpperCase();
-           }
-      }
-       
-       return noDupes;
-   }
-
   /**
    * Main method to test the methods in this class
    *
@@ -192,18 +179,15 @@ public class StringStuff {
       System.out.println( isPalindrome( pal5 ) + " true");
       System.out.println( "evensOnly()        returns: " + evensOnly( "REHEARSALSZ" ) + " : RHRLZ");
       System.out.println( "evensOnly()        returns: " + evensOnly( "REhearSALsz" ) + " : RhrLz" );
-      System.out.println( "evensOnlyNoDupes() returns: " + evensOnlyNoDupes( "REhearSALsz" ) + " Should: RhLz" );
+      System.out.println( "evensOnlyNoDupes() returns: " + evensOnlyNoDupes( "REhearSALsz" ) + " : RhLz" );
       System.out.println( "oddsOnly()         returns: " + oddsOnly( "xylophones" ) + " : yooes" );
       System.out.println( "oddsOnly()         returns: " + oddsOnly( "XYloPHonES" ) + " : YooES" );
       System.out.println( "oddsOnlyNoDupes()  returns: " + oddsOnlyNoDupes( "XYloPHonES" ) + " : YoES" );
       System.out.println( "reverse()          returns: " + reverse( "REHEARSALSZ" ) + " : ZSLASRAEHER");
-      
       System.out.println( "evensOnly()        returns: " + evensOnly( "REhearSALsz" ) + " : RhrLz" );
-      System.out.println( "evensOnlyNoDupes() returns: " + evensOnlyNoDupes( "REhearSALsz" ) + " Should: RhLz" );
+      System.out.println( "evensOnlyNoDupes() returns: " + evensOnlyNoDupes( "REhearSALsz" ) + " : RhLz" );
       System.out.println( "oddsOnly()         returns: " + oddsOnly( "XYloPHonES" ) + " : YooES" );
       System.out.println( "oddsOnlyNoDupes()  returns: " + oddsOnlyNoDupes( "XYloPHonES" ) + " : YoES" );
-      System.out.println( "reverse()          returns: " + reverse( "REHEARSALSZ" ) + " : ZSLASRAEHER");
-      System.out.println( "returns: " + evensOnly(reverse( "ZipBipDiddlyNip" )) + " : pBpZ");
    }
 } 
  
