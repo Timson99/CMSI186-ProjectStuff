@@ -59,12 +59,10 @@ public class StringStuff {
    * @param s String containing the data to be checked for &quot;palindrome-ness&quot;
    * @return  boolean which is true if this a palindrome, or false otherwise
    */
-   public static boolean isPalindrome( String s ) {
+   public static boolean isPalindrome( String str ) {
+       String s = str.toLowerCase();
        int halfString =(s.length())/2;
-       for(int x =0; x < halfString; x++) { /*
-           System.out.print(s.substring(x,x+1) + s.substring(s.length()-x-1, s.length()-x));
-           if(s.substring(x,x+1) != s.substring(s.length()-x-1, s.length()-x));
-                return false; */
+       for(int x =0; x < halfString; x++) {
         if(s.charAt(x) != s.charAt(s.length()-x-1)) 
             return false;
        }
@@ -120,7 +118,7 @@ public class StringStuff {
       for(int x = 0; x < s.length(); x++) {
           if(evenLetters.indexOf(s.substring(x, x+1)) != -1 && duplicates.indexOf((s.substring(x, x+1)).toUpperCase()) == -1) {
               evensOnly = evensOnly + s.substring(x, x+1); 
-              duplicates = duplicates + s.substring(x, x+1);
+              duplicates = duplicates + s.substring(x, x+1).toUpperCase();
           }
        }
        return evensOnly;
@@ -139,7 +137,7 @@ public class StringStuff {
       for(int x = 0; x < s.length(); x++) {
           if(oddLetters.indexOf(s.substring(x, x+1)) != -1 && duplicates.indexOf((s.substring(x, x+1)).toUpperCase()) == -1) {
               oddsOnly = oddsOnly + s.substring(x, x+1); 
-              duplicates = duplicates + (s.substring(x, x+1)).toUpperCase();
+              duplicates = duplicates + (s.substring(x, x+1)).toUpperCase(); //Store duplicates as upper case so they can be evaluated without consideration of case
           }
        }
        return oddsOnly;
@@ -157,6 +155,19 @@ public class StringStuff {
           reversedString = s.substring(x, x+1) + reversedString;
       }
       return reversedString; 
+   }
+   
+   public static String removeDupes( String s ) {
+       String noDupes = "";
+       String duplicates = "";
+       for(int x = 0; x < s.length(); x++) {
+           if(duplicates.indexOf((s.substring(x, x+1)).toUpperCase()) == -1) {
+                noDupes = noDupes +s.substring(x, x+1);
+                duplicates = duplicates + s.substring(x, x+1).toUpperCase();
+           }
+      }
+       
+       return noDupes;
    }
 
   /**
@@ -179,13 +190,20 @@ public class StringStuff {
       System.out.println( isPalindrome( pal3 ) + " true" );
       System.out.println( isPalindrome( pal4 ) + " true");
       System.out.println( isPalindrome( pal5 ) + " true");
-      System.out.println( "evensOnly()        returns: " + evensOnly( "REHEARSALSZ" ) + " Should: RHRLZ");
-      System.out.println( "evensOnly()        returns: " + evensOnly( "REhearSALsz" ) + " Should: RhrLz" );
+      System.out.println( "evensOnly()        returns: " + evensOnly( "REHEARSALSZ" ) + " : RHRLZ");
+      System.out.println( "evensOnly()        returns: " + evensOnly( "REhearSALsz" ) + " : RhrLz" );
       System.out.println( "evensOnlyNoDupes() returns: " + evensOnlyNoDupes( "REhearSALsz" ) + " Should: RhLz" );
-      System.out.println( "oddsOnly()         returns: " + oddsOnly( "xylophones" ) + " Should: yooes" );
-      System.out.println( "oddsOnly()         returns: " + oddsOnly( "XYloPHonES" ) + " Should: YooES" );
-      System.out.println( "oddsOnlyNoDupes()  returns: " + oddsOnlyNoDupes( "XYloPHonES" ) + " Should: YoES" );
-      System.out.println( "reverse()          returns: " + reverse( "REHEARSALSZ" ) + " Should: ZSLASRAEHER");
+      System.out.println( "oddsOnly()         returns: " + oddsOnly( "xylophones" ) + " : yooes" );
+      System.out.println( "oddsOnly()         returns: " + oddsOnly( "XYloPHonES" ) + " : YooES" );
+      System.out.println( "oddsOnlyNoDupes()  returns: " + oddsOnlyNoDupes( "XYloPHonES" ) + " : YoES" );
+      System.out.println( "reverse()          returns: " + reverse( "REHEARSALSZ" ) + " : ZSLASRAEHER");
+      
+      System.out.println( "evensOnly()        returns: " + evensOnly( "REhearSALsz" ) + " : RhrLz" );
+      System.out.println( "evensOnlyNoDupes() returns: " + evensOnlyNoDupes( "REhearSALsz" ) + " Should: RhLz" );
+      System.out.println( "oddsOnly()         returns: " + oddsOnly( "XYloPHonES" ) + " : YooES" );
+      System.out.println( "oddsOnlyNoDupes()  returns: " + oddsOnlyNoDupes( "XYloPHonES" ) + " : YoES" );
+      System.out.println( "reverse()          returns: " + reverse( "REHEARSALSZ" ) + " : ZSLASRAEHER");
+      System.out.println( "returns: " + evensOnly(reverse( "ZipBipDiddlyNip" )) + " : pBpZ");
    }
 } 
  
