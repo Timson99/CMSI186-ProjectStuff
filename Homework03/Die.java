@@ -53,7 +53,7 @@ public class Die {
            throw new IllegalArgumentException();
        
        sides = nSides;
-       value = 1;
+       value = 1; //All dice are initially rolled to the value 1
    }
 
   /**
@@ -117,18 +117,69 @@ public class Die {
    * A little test main to check things out
    */
    public static void main( String[] args ) {
-      
-      Die x = new Die(6);
-      x.roll();
-      System.out.println(x.toString());
-      x.roll();
-      System.out.println(x.toString());
-      System.out.println(x.getValue());
-      System.out.println(x.getSides());
-      System.out.println(x.setSides(7));
-      System.out.println(x.getSides());
-      System.out.println(x.toString());
-      System.out.println(Die.toString(x));
+      Die d = null;
+      try { d = new Die(1);}
+      catch ( IllegalArgumentException iae ) { System.out.println("Too few sides"); }
+      try { d = new Die(2);}
+      catch ( IllegalArgumentException iae ) { System.out.println("Too few sides"); }
+      try { d = new Die(3);}
+      catch ( IllegalArgumentException iae ) { System.out.println("Too few sides"); }
+      try { d = new Die(4);}
+      catch ( IllegalArgumentException iae ) { System.out.println("Too few sides"); }
+      System.out.println("Roll Test for 4 sided die");
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println(d.toString());
+      System.out.println(Die.toString(d));
+      System.out.println("Sides: " + d.getSides());
+      System.out.println("Value: " + d.getValue());
+      d.setSides(5);
+      System.out.println("Roll Test for 5 sided die");
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println(d.toString());
+      System.out.println(Die.toString(d));
+      System.out.println("Sides: " + d.getSides());
+      System.out.println("Value: " + d.getValue());
+      d.setSides(6);
+      System.out.println("Roll Test for 6 sided die");
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println(d.toString());
+      System.out.println(Die.toString(d));
+      System.out.println("Sides: " + d.getSides());
+      System.out.println("Value: " + d.getValue());
+      d.setSides(10);
+      System.out.println("Roll Test for 10 sided die");
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println(d.toString());
+      System.out.println(Die.toString(d));
+      System.out.println("Sides: " + d.getSides());
+      System.out.println("Value: " + d.getValue());
+      d.setSides(20);
+      System.out.println("Roll Test for 20 sided die");
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println("You rolled a " + d.roll());
+      System.out.println(d.toString());
+      System.out.println(Die.toString(d));
+      System.out.println("Sides: " + d.getSides());
+      System.out.println("Value: " + d.getValue());
 
    }
 

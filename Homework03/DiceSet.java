@@ -127,30 +127,89 @@ public class DiceSet {
    * @return  true if this set is identical to the set passed as an argument
    */
    public boolean isIdentical( DiceSet ds ) {
-      return toString().equals(ds.toString());
+      return toString().equals(ds.toString()); 
    }
   /**
    * A little test main to check things out
    */
    public static void main( String[] args ) {
-        DiceSet x = new DiceSet(6,6);
-        System.out.println(x.toString());
-        System.out.println(x.sum());
-        x.roll();
-        System.out.println(x.toString());
-        System.out.println(x.sum());
-        DiceSet y = new DiceSet(6,6);
-        System.out.println(DiceSet.toString(y));
-        System.out.println(y.rollIndividual(3));
-        System.out.println(y.toString());
-        System.out.println(y.getIndividual(3));
-        DiceSet w = new DiceSet(5,5);
-        DiceSet z = new DiceSet(5,5);
-        System.out.println(z.toString());
-        System.out.println(w.toString());
-        System.out.println(y.isIdentical(x));
-        System.out.println(w.isIdentical(z));
-   
+        DiceSet ds = null;
+      try { ds = new DiceSet(0,0);}
+      catch ( IllegalArgumentException iae ) { System.out.println("Invalid"); }
+      try { ds = new DiceSet(0,10);}
+      catch ( IllegalArgumentException iae ) { System.out.println("Too few Dice"); }
+      try { ds = new DiceSet(10,0);}
+      catch ( IllegalArgumentException iae ) { System.out.println("Too few Sides"); }
+      try { ds = new DiceSet(1,1);}
+      catch ( IllegalArgumentException iae ) { System.out.println("Too few sides"); }
+      try { ds = new DiceSet(1,2);}
+      catch ( IllegalArgumentException iae ) { System.out.println("Too few sides"); }
+      try { ds = new DiceSet(1,3);}
+      catch ( IllegalArgumentException iae ) { System.out.println("Too few sides"); }
+      try { ds = new DiceSet(1,4);}
+      catch ( IllegalArgumentException iae ) { System.out.println("Too few sides"); } 
+      System.out.println("Rolling for 1 die with 4 sides");
+      System.out.println(DiceSet.toString(ds)); 
+      ds.roll();
+      System.out.println(ds.toString()); 
+      System.out.println(ds.sum()); 
+      ds.roll();
+      System.out.println(ds.sum()); 
+      System.out.println(ds.rollIndividual(0)); 
+      System.out.println(ds.getIndividual(0)); 
+      ds = new DiceSet(2, 5);
+      System.out.println("Rolling for 2 dice with 5 sides");
+      System.out.println(DiceSet.toString(ds)); 
+      ds.roll();
+      System.out.println(ds.toString()); 
+      System.out.println(ds.sum()); 
+      ds.roll();
+      System.out.println(ds.sum()); 
+      System.out.println(ds.rollIndividual(0)); 
+      System.out.println(ds.getIndividual(0));
+      ds = new DiceSet(3, 6);
+      System.out.println("Rolling for 3 dice with 6 sides");
+      System.out.println(DiceSet.toString(ds)); 
+      ds.roll();
+      System.out.println(ds.toString()); 
+      System.out.println(ds.sum()); 
+      ds.roll();
+      System.out.println(ds.sum()); 
+      System.out.println(ds.rollIndividual(0)); 
+      System.out.println(ds.getIndividual(0));
+      ds = new DiceSet(4, 7);
+      System.out.println("Rolling for 4 dice with 7 sides");
+      System.out.println(DiceSet.toString(ds)); 
+      ds.roll();
+      System.out.println(ds.toString()); 
+      System.out.println(ds.sum()); 
+      ds.roll();
+      System.out.println(ds.sum()); 
+      System.out.println(ds.rollIndividual(0)); 
+      System.out.println(ds.getIndividual(0));
+      ds = new DiceSet(10, 10);
+      System.out.println("Rolling for 10 dice with 10 sides");
+      System.out.println(DiceSet.toString(ds)); 
+      ds.roll();
+      System.out.println(ds.toString()); 
+      System.out.println(ds.sum()); 
+      ds.roll();
+      System.out.println(ds.sum()); 
+      System.out.println(ds.rollIndividual(0)); 
+      System.out.println(ds.getIndividual(0));
+      
+      DiceSet x = new DiceSet(5,5);
+      
+      DiceSet a = new DiceSet(6,5);
+      DiceSet b = new DiceSet(5,6);
+      DiceSet c = new DiceSet(5,5);
+      c.roll();
+      DiceSet d = new DiceSet(5,5);
+      
+      System.out.println(x.isIdentical(a));
+      System.out.println(x.isIdentical(b));
+      System.out.println(x.isIdentical(c));
+      System.out.println(x.isIdentical(d));
    }
 
 }
