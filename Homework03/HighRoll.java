@@ -1,5 +1,5 @@
 /** @StringStuff.java  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- *  File          :  highRoll.java
+ *  File          :  HighRoll.java
  *  Purpose       :  
  *  Date          :  2018-02-01 
  *  Author        :  Timothy Herrmann
@@ -33,7 +33,6 @@ public class HighRoll{
         System.out.println("How many sides?");
         int inputSides = keyboard.nextInt();
         DiceSet ds = new DiceSet(inputCount, inputSides);
-        System.out.println(inputCount + inputSides);
        
 
         while(true) {
@@ -59,7 +58,7 @@ public class HighRoll{
                     
                     System.out.println("Roll which dice?"); //Test boundaries
                     int diceNumber = keyboard.nextInt();
-                    if(x < 1 || x > inputCount) 
+                    if(diceNumber < 1 || diceNumber > inputCount) 
                         System.out.println("Invalid number of dice");
                     else {
                     ds.rollIndividual((diceNumber - 1));

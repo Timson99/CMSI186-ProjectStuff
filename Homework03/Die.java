@@ -123,7 +123,13 @@ public class Die {
       System.out.println(x.toString());
       x.roll();
       System.out.println(x.toString());
-      
+      System.out.println(x.getValue());
+      System.out.println(x.getSides());
+      System.out.println(x.setSides(7));
+      System.out.println(x.getSides());
+      System.out.println(x.toString());
+      System.out.println(Die.toString(x));
+
    }
 
 }

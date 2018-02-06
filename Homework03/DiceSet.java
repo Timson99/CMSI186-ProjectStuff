@@ -115,10 +115,10 @@ public class DiceSet {
   /**
    * @return Class-wide version of the preceding instance method
    */
-   public static String toString( DiceSet ds ) {
+   public static String toString( DiceSet ds ) { //Change to be like instance method
       String result = "";
       for(int x = 0; x<ds.count; x++) {
-          result = result + "["+ds.getIndividual(x)+"]\n"; 
+          result = result + "[Sides: (" + ds.sides + ") Value: ("+ds.getIndividual(x)+")]\n"; 
       }
       return result;
    }
@@ -127,7 +127,7 @@ public class DiceSet {
    * @return  true if this set is identical to the set passed as an argument
    */
    public boolean isIdentical( DiceSet ds ) {
-      return ds.toString().equals(this.ds.toString());
+      return toString().equals(ds.toString());
    }
   /**
    * A little test main to check things out
@@ -135,6 +135,22 @@ public class DiceSet {
    public static void main( String[] args ) {
         DiceSet x = new DiceSet(6,6);
         System.out.println(x.toString());
+        System.out.println(x.sum());
+        x.roll();
+        System.out.println(x.toString());
+        System.out.println(x.sum());
+        DiceSet y = new DiceSet(6,6);
+        System.out.println(DiceSet.toString(y));
+        System.out.println(y.rollIndividual(3));
+        System.out.println(y.toString());
+        System.out.println(y.getIndividual(3));
+        DiceSet w = new DiceSet(5,5);
+        DiceSet z = new DiceSet(5,5);
+        System.out.println(z.toString());
+        System.out.println(w.toString());
+        System.out.println(y.isIdentical(x));
+        System.out.println(w.isIdentical(z));
+   
    }
 
 }
