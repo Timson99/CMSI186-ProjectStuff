@@ -13,6 +13,7 @@
  *    Ver      Date     Modified by:  Description for change/modification
  *   -----  ----------  ------------  -------------------------------------------------------------------
  *   1.0.0  2018-02-01  T. Herrmann   Initial Version
+ *   1.0.1  2017-02-08  T. Herrmann  Version for Submission
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -29,7 +30,7 @@ public class HighRoll{
         int currentScore = 0;
         
         System.out.println("\nHow many dice?");
-        int inputCount = keyboard.nextInt();
+        int inputCount = keyboard.nextInt(); 
         System.out.println("How many sides?");
         int inputSides = keyboard.nextInt();
         DiceSet ds = new DiceSet(inputCount, inputSides);
@@ -46,7 +47,7 @@ public class HighRoll{
             System.out.println("\tQ): QUIT THE PROGRAM\n");
             
             String inputLine = null;
-            try {
+            try { 
                 inputLine = input.readLine();
                 if(inputLine.trim().equals("Q") || inputLine.trim().equals("q")) 
                     break;
@@ -61,7 +62,7 @@ public class HighRoll{
                     if(diceNumber < 1 || diceNumber > inputCount) 
                         System.out.println("Invalid number of dice");
                     else {
-                    ds.rollIndividual((diceNumber - 1));
+                    ds.rollIndividual((diceNumber - 1)); 
                     System.out.println(ds.toString());
                     }
                 }

@@ -25,7 +25,8 @@
  *  ---------------
  *            Rev      Date     Modified by:  Reason for change/modification
  *           -----  ----------  ------------  -----------------------------------------------------------
- *  @version 1.0.0  2017-02-01  T. Herrmann    Initial writing and release
+ *  @version 1.0.0  2017-02-01  T. Herrmann    Initial writing and release'
+ *  @version 1.0.1  2017-02-08  T. Herrmann    Version for Submission
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 public class DiceSet {
 
@@ -51,10 +52,10 @@ public class DiceSet {
       if(count < 1 || sides < MINIMUM_SIDES )
           throw new IllegalArgumentException(); 
       
-      this.ds = new Die[ count ];
+      this.ds = new Die[ count ]; 
       
       for(int x = 0; x<count; x++) {
-          this.ds[x] = new Die(sides);
+          this.ds[x] = new Die(sides); //Populate Dice array
       }
       
    }
@@ -76,7 +77,7 @@ public class DiceSet {
    */
    public void roll() {
        for(int x = 0; x<count; x++){
-          this.ds[x].roll();
+          this.ds[x].roll(); 
       } 
    }
 
@@ -106,7 +107,7 @@ public class DiceSet {
    public String toString() {
       String result = "";
       for(int x = 0; x < count; x++) {
-          result = result + ds[x].toString() + "\n";
+          result = result + ds[x].toString() + "\n"; //Line by line representation of each dice
           
       }
       return result;
@@ -115,7 +116,7 @@ public class DiceSet {
   /**
    * @return Class-wide version of the preceding instance method
    */
-   public static String toString( DiceSet ds ) { //Change to be like instance method
+   public static String toString( DiceSet ds ) {
       String result = "";
       for(int x = 0; x<ds.count; x++) {
           result = result + "[Sides: (" + ds.sides + ") Value: ("+ds.getIndividual(x)+")]\n"; 
@@ -127,7 +128,7 @@ public class DiceSet {
    * @return  true if this set is identical to the set passed as an argument
    */
    public boolean isIdentical( DiceSet ds ) {
-      return toString().equals(ds.toString()); 
+      return toString().equals(ds.toString());  //Uses internal toString method to see if it is equal to passed in DiceSet
    }
   /**
    * A little test main to check things out
@@ -152,9 +153,9 @@ public class DiceSet {
       System.out.println(DiceSet.toString(ds)); 
       ds.roll();
       System.out.println(ds.toString()); 
-      System.out.println(ds.sum()); 
+      System.out.println("Sum " + ds.sum()); 
       ds.roll();
-      System.out.println(ds.sum()); 
+      System.out.println("Sum " + ds.sum()); 
       System.out.println(ds.rollIndividual(0)); 
       System.out.println(ds.getIndividual(0)); 
       ds = new DiceSet(2, 5);
@@ -162,9 +163,9 @@ public class DiceSet {
       System.out.println(DiceSet.toString(ds)); 
       ds.roll();
       System.out.println(ds.toString()); 
-      System.out.println(ds.sum()); 
+      System.out.println("Sum " + ds.sum()); 
       ds.roll();
-      System.out.println(ds.sum()); 
+      System.out.println("Sum " + ds.sum()); 
       System.out.println(ds.rollIndividual(0)); 
       System.out.println(ds.getIndividual(0));
       ds = new DiceSet(3, 6);
@@ -172,9 +173,9 @@ public class DiceSet {
       System.out.println(DiceSet.toString(ds)); 
       ds.roll();
       System.out.println(ds.toString()); 
-      System.out.println(ds.sum()); 
+      System.out.println("Sum " + ds.sum()); 
       ds.roll();
-      System.out.println(ds.sum()); 
+      System.out.println("Sum " + ds.sum()); 
       System.out.println(ds.rollIndividual(0)); 
       System.out.println(ds.getIndividual(0));
       ds = new DiceSet(4, 7);
@@ -182,9 +183,9 @@ public class DiceSet {
       System.out.println(DiceSet.toString(ds)); 
       ds.roll();
       System.out.println(ds.toString()); 
-      System.out.println(ds.sum()); 
+      System.out.println("Sum " + ds.sum()); 
       ds.roll();
-      System.out.println(ds.sum()); 
+      System.out.println("Sum " + ds.sum()); 
       System.out.println(ds.rollIndividual(0)); 
       System.out.println(ds.getIndividual(0));
       ds = new DiceSet(10, 10);
@@ -192,9 +193,9 @@ public class DiceSet {
       System.out.println(DiceSet.toString(ds)); 
       ds.roll();
       System.out.println(ds.toString()); 
-      System.out.println(ds.sum()); 
+      System.out.println("Sum " + ds.sum()); 
       ds.roll();
-      System.out.println(ds.sum()); 
+      System.out.println("Sum " + ds.sum()); 
       System.out.println(ds.rollIndividual(0)); 
       System.out.println(ds.getIndividual(0));
       

@@ -31,6 +31,7 @@
  *            Rev      Date     Modified by:  Reason for change/modification
  *           -----  ----------  ------------  -----------------------------------------------------------
  *  @version 1.0.0  2017-02-01  Timothy Herrmann  Initial writing
+ *  @version 1.0.1  2017-02-08  Timothy Herrmann  Version for Submission
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 public class Die {
 
@@ -61,7 +62,7 @@ public class Die {
    * @return  integer value of the result of the roll, randomly selected
    */
    public int roll() {
-      value = (1 + (int)(Math.random() * this.sides));
+      value = (1 + (int)(Math.random() * this.sides)); //Provides a random number between 1 and sides
       this.value = value;
       return value;
    }
@@ -102,7 +103,7 @@ public class Die {
    * @return String representation of this Die
    */
    public String toString() {
-      return "[Sides: ("+ this.sides + ") Value: ("+getValue()+")]"; //Value or this many of sides?
+      return "[Sides: ("+ this.sides + ") Value: ("+getValue()+")]"; //Value and sides
    }
 
   /**
@@ -110,7 +111,7 @@ public class Die {
    * @return String representation of this Die
    */
    public static String toString( Die d ) {
-        return "[Sides: ("+d.getSides()+ ") Value: ("+d.getValue()+")]"; //Value or this many of sides?
+        return "[Sides: ("+d.getSides()+ ") Value: ("+d.getValue()+")]"; //Value and sides
    }
 
   /**
