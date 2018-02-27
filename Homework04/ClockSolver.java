@@ -21,6 +21,7 @@ public class ClockSolver {
   /**
    *  Class field definintions go here
    */
+   private static final double MAXIMUM_DEGREE_VALUE = 360.0;
    private final double MAX_TIME_SLICE_IN_SECONDS  = 1800.00;
    private final double SECONDS_IN_TWELVE_HOURS    = 43200;
    private final double MAX_EPSILON_IN_DEGREES     = 30.0;
@@ -51,14 +52,20 @@ public class ClockSolver {
      // you may want to consider using args[2] for an "angle window"
 
       System.out.println( "\n   Hello world, from the ClockSolver program!!\n\n" ) ;
-      if( 0 == args.length || (Double.parseDouble(args[0]) >= 360.0 || Double.parseDouble(args[0]) < 0.0)) {
+      if( 0 == args.length) {
          System.out.println( "   Sorry you must enter at least one valid argument\n" +
                              "   Usage: java ClockSolver <angle> [timeSlice]\n" +
                              "   Please try again..........." );
          System.exit( 1 );
       }
-
-      inputAngle = clock.validateAngleArg(args[0]);
+      
+      if(Double.parseDouble(args[0]) < MAXIMUM_DEGREE_VALUE && Double.parseDouble(args[0]) >= 0.0) {
+          inputAngle = clock.validateAngleArg(args[0]);
+      }
+      else {
+          System.out.println("Your Angle (in degrees) argument is out of bounds: [0,360)");
+          System.exit( 1 );  
+      }
       
       if(args.length > 1 && Double.parseDouble(args[1]) <= MAX_TIME_SLICE_IN_SECONDS && Double.parseDouble(args[1]) > 0.0) {
           timeSlice = clock.validateTimeSliceArg(args[1]);
@@ -86,15 +93,13 @@ public class ClockSolver {
        long iterations = (long)(SECONDS_IN_TWELVE_HOURS/timeSlice);
        
        for(int i = 0; i < iterations; i++) {
-           if(inputAngle < 180) {
-               if(clock.getHandSmallerAngle() > (inputAngle - epsilonValue) &&  // (Math.abs(inputAngle - clock.getHandSmallerAngle()) < epsilonValue)
-                  clock.getHandSmallerAngle() < (inputAngle + epsilonValue)) {
+           if(inputAngle < (MAXIMUM_DEGREE_VALUE/2)) {
+               if(Math.abs(inputAngle - clock.getHandSmallerAngle()) < epsilonValue) {
                     System.out.println("" + clock.toString());
                }
            }
            else {
-               if(clock.getHandLargerAngle() > (inputAngle - epsilonValue) && 
-                  clock.getHandLargerAngle() < (inputAngle + epsilonValue)) {
+               if(Math.abs(inputAngle - clock.getHandLargerAngle()) < epsilonValue) {
                     System.out.println("" + clock.toString());
                }
            }

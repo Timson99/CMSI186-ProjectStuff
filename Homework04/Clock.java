@@ -23,9 +23,10 @@ public class Clock {
    *  Class field definintions go here
    */
    private static final double DEFAULT_TIME_SLICE_IN_SECONDS = 60.0;
+   private static final double TEST_EPSILON = 0.00000001;
    private static final double INVALID_ARGUMENT_VALUE = -1.0;
    private static final double MAXIMUM_DEGREE_VALUE = 360.0;
-   private static final double HOUR_HAND_DEGREES_PER_MINUTE = 0.5004; //0.5
+   private static final double HOUR_HAND_DEGREES_PER_MINUTE = 0.5004; //Emulates Imprecision of demonstration classes
    private static final double MINUTE_HAND_DEGREES_PER_MINUTE = 6.0;
    private static final double SECONDS_PER_MINUTE = 60.0;
    private static final double MINUTES_PER_HOUR = 60.0; 
@@ -62,11 +63,11 @@ public class Clock {
        double scaledTimeSlice = timeSlice/SECONDS_PER_MINUTE;
        double minuteIncrement = MINUTE_HAND_DEGREES_PER_MINUTE * scaledTimeSlice;
        double hourIncrement = HOUR_HAND_DEGREES_PER_MINUTE * scaledTimeSlice;
-    
-       hourHandAngle %= MAXIMUM_DEGREE_VALUE;
-       minuteHandAngle %= MAXIMUM_DEGREE_VALUE;
+     
        minuteHandAngle += minuteIncrement;
        hourHandAngle += hourIncrement; 
+       hourHandAngle %= MAXIMUM_DEGREE_VALUE;
+       minuteHandAngle %= MAXIMUM_DEGREE_VALUE;
        totalSeconds += timeSlice;
        calculatePrecision();
        return totalSeconds;
@@ -200,12 +201,12 @@ public class Clock {
     
       toStringOutput = toStringOutput + getHour() + " Hours ";
       
-      if(getMinute()%(int)MINUTES_PER_HOUR < 10)
+      if(getMinute()%(int)MINUTES_PER_HOUR < secondsPreciseDigits)
             toStringOutput = toStringOutput + "0";
             
-      toStringOutput = toStringOutput + getMinute()%MINUTES_PER_HOUR + " Minutes ";
+      toStringOutput = toStringOutput + getMinute()%((int)MINUTES_PER_HOUR) + " Minutes ";
       
-      if(getTotalSeconds()%(int)SECONDS_PER_MINUTE < 10)
+      if(getTotalSeconds()%(int)SECONDS_PER_MINUTE < secondsPreciseDigits)
             toStringOutput = toStringOutput + "0";
       
       toStringOutput = toStringOutput + d1.format(getTotalSeconds()%(int)SECONDS_PER_MINUTE) + " Seconds";
@@ -295,10 +296,70 @@ public class Clock {
       System.out.println("\t60 tick --- Total Seconds: " + clock3.tick() + "; Minute Hand Angle: " + clock3.getMinuteHandAngle() + "; Hour Hand Angle: " + clock3.getHourHandAngle());
       System.out.println("\t61 tick --- Total Seconds: " + clock3.tick() + "; Minute Hand Angle: " + clock3.getMinuteHandAngle() + "; Hour Hand Angle: " + clock3.getHourHandAngle());
       
+      Clock clock4 = new Clock();
+      clock4.validateTimeSliceArg("0.1");
       
+      System.out.println("**Time Slice: 0.1**");
+      System.out.println("\t1 tick --- Total Seconds: " + clock4.tick() + "; Minute Hand Angle: " + clock4.getMinuteHandAngle() + "; Hour Hand Angle: " + clock4.getHourHandAngle());
+      System.out.println("\t2 tick --- Total Seconds: " + clock4.tick() + "; Minute Hand Angle: " + clock4.getMinuteHandAngle() + "; Hour Hand Angle: " + clock4.getHourHandAngle());
+      System.out.println("\t3 tick --- Total Seconds: " + clock4.tick() + "; Minute Hand Angle: " + clock4.getMinuteHandAngle() + "; Hour Hand Angle: " + clock4.getHourHandAngle());
+      for(int i = 0; i < 35995; i++)
+          clock4.tick();
       
+      System.out.println("\t59 tick --- Total Seconds: " + clock4.tick() + "; Minute Hand Angle: " + clock4.getMinuteHandAngle() + "; Hour Hand Angle: " + clock4.getHourHandAngle());
+      System.out.println("\t60 tick --- Total Seconds: " + clock4.tick() + "; Minute Hand Angle: " + clock4.getMinuteHandAngle() + "; Hour Hand Angle: " + clock4.getHourHandAngle());
+      System.out.println("\t61 tick --- Total Seconds: " + clock4.tick() + "; Minute Hand Angle: " + clock4.getMinuteHandAngle() + "; Hour Hand Angle: " + clock4.getHourHandAngle());
       
-      System.out.println("\n********TESTS REQUIRING INPUT**********\n");
+       Clock clock5 = new Clock();
+      clock5.validateTimeSliceArg("0.001");
+      
+      System.out.println("**Time Slice: 0.001**");
+      System.out.println("\t1 tick --- Total Seconds: " + clock5.tick() + "; Minute Hand Angle: " + clock5.getMinuteHandAngle() + "; Hour Hand Angle: " + clock5.getHourHandAngle());
+      System.out.println("\t2 tick --- Total Seconds: " + clock5.tick() + "; Minute Hand Angle: " + clock5.getMinuteHandAngle() + "; Hour Hand Angle: " + clock5.getHourHandAngle());
+      System.out.println("\t3 tick --- Total Seconds: " + clock5.tick() + "; Minute Hand Angle: " + clock5.getMinuteHandAngle() + "; Hour Hand Angle: " + clock5.getHourHandAngle());
+      for(int i = 0; i < 3599995; i++)
+          clock5.tick();
+      
+      System.out.println("\t59 tick --- Total Seconds: " + clock5.tick() + "; Minute Hand Angle: " + clock5.getMinuteHandAngle() + "; Hour Hand Angle: " + clock5.getHourHandAngle());
+      System.out.println("\t60 tick --- Total Seconds: " + clock5.tick() + "; Minute Hand Angle: " + clock5.getMinuteHandAngle() + "; Hour Hand Angle: " + clock5.getHourHandAngle());
+      System.out.println("\t61 tick --- Total Seconds: " + clock5.tick() + "; Minute Hand Angle: " + clock5.getMinuteHandAngle() + "; Hour Hand Angle: " + clock5.getHourHandAngle());
+
+      System.out.println( "\n    Testing toString()....");
+      Clock clock6 = new Clock();
+      
+      clock6.validateTimeSliceArg("1.0");
+      System.out.print("\tTesting 5 seconds:   ");
+      for(int i = 0; i <5; i++)
+          clock6.tick();
+
+      System.out.print(clock6.toString());
+      System.out.println(("00 Hours 00 Minutes 05.0 Seconds".equals(clock6.toString()) ? " - got it" : " - WRONG" ));
+      System.out.print("\tTesting 1 minute:   ");
+      for(int i = 0; i <55; i++)
+          clock6.tick();
+
+      System.out.print(clock6.toString());
+      System.out.println(("00 Hours 01 Minutes 00.0 Seconds".equals(clock6.toString()) ? " - got it" : " - WRONG" ));
+      System.out.print("\tTesting 1 hour:   ");
+      for(int i = 0; i < 3540; i++)
+          clock6.tick();
+
+      System.out.print(clock6.toString());
+      System.out.println(("01 Hours 00 Minutes 00.0 Seconds".equals(clock6.toString()) ? " - got it" : " - WRONG" ));
+      System.out.print("\tTesting 6 hours 30 minutes 5 seconds   ");
+      for(int i = 0; i < 19805; i++)
+          clock6.tick();
+
+      System.out.print(clock6.toString());
+      System.out.println(("06 Hours 30 Minutes 05.0 Seconds".equals(clock6.toString()) ? " - got it" : " - WRONG" ));
+      System.out.print("\tTesting 11 hours 59 minutes and 59 seconds   ");
+      for(int i = 0; i < 19794; i++)
+          clock6.tick();
+
+      System.out.print(clock6.toString());
+      System.out.println(("11 Hours 59 Minutes 59.0 Seconds".equals(clock6.toString()) ? " - got it" : " - WRONG" ));
+      
+      System.out.println("\n********DEBUG MENU**********\n");
       Scanner keyboard = new Scanner(System.in);
       int inTicks;
       double inTimeSlice;
