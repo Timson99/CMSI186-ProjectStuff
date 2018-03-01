@@ -226,20 +226,7 @@ public class Clock {
                           "--------------------------\n" );
       System.out.println( "  Creating a new clock: " );
       Clock clock = new Clock();
-      System.out.println("Round" + clock.roundingValue);
-      System.out.println("Time Slice:" + clock.validateTimeSliceArg("1.0"));
-      System.out.println("New Round" + clock.roundingValue);
-      
-      for(int x = 0; x<327; x++)
-          clock.tick();
-      
-      System.out.println(clock.totalSeconds);
-      System.out.println( "    New clock created: " + clock.toString() );
-      System.out.println(clock.getMinuteHandAngle());
-      System.out.println(clock.getHourHandAngle());
-      System.out.println(clock.getHandLargerAngle());
-      System.out.println(clock.getHandSmallerAngle());
-      
+  
       System.out.println( "\n    Testing validateAngleArg()....");
       System.out.print( "      sending '  0 degrees', expecting double value   0.0" );
       try { System.out.println( (0.0 == clock.validateAngleArg( "0.0" )) ? " - got 0.0" : " - no joy" ); }
@@ -359,7 +346,8 @@ public class Clock {
       System.out.print(clock6.toString());
       System.out.println(("11 Hours 59 Minutes 59.0 Seconds".equals(clock6.toString()) ? " - got it" : " - WRONG" ));
       
-      System.out.println("\n********DEBUG MENU**********\n");
+      
+      System.out.println("\n********DEBUG MENU**********\n"); //Debug to test accuracy of angle calculations
       Scanner keyboard = new Scanner(System.in);
       int inTicks;
       double inTimeSlice;
