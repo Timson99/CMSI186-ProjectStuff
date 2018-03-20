@@ -27,8 +27,8 @@
  
     private static double poleX = 3;
     private static double poleY = 3;
-    private static double fieldXLength = 500;
-    private static double fieldYLength = 500;
+    private static double fieldXLength = 1000;
+    private static double fieldYLength = 1000;
     
     private Timer timerSim = new Timer();
     private Ball[] soccerBalls;
@@ -43,7 +43,7 @@
          
          
          if(args.length < ballArgSet) {
-             System.out.println("\nArguments Invalid: Cannot run with less than four arguments.\n");
+             System.out.println("\nArguments Invalid: Cannot run with less than four arguments. Try again.\n");
              System.exit(1);
          } 
          if(args.length%ballArgSet > 1) {
@@ -57,20 +57,46 @@
          for(int x = 0; x<numberOfBalls; x++) {
              int count = ballArgSet * x;
              soccerBalls[x] = new Ball(fieldXLength, fieldYLength, timeSlice);
-             soccerBalls[x].validateCoordinates( args[count] , args[count + 1] );
-             soccerBalls[x].validateSpeeds( args[count + 2] , args[count + 3] );
+             
+             try {
+                soccerBalls[x].validateCoordinates( args[count] , args[count + 1] );
+             }
+             catch(NumberFormatException nfe) {
+                System.out.println("\nArgument Invalid: Invalid off-field Coordinates can not be inputed");
+                System.out.println("X MIN: -500\nX MAX: 500\nY MIN -500\nY MAX: 500");
+                System.exit(1);
+             }
+          
+             try {
+                soccerBalls[x].validateSpeeds( args[count + 2] , args[count + 3] );
+             }
+             catch(NumberFormatException nfe) {
+                 System.out.println("Arguments Invalid: Cannot be Parsed");
+                System.exit(1);
+             }
          }
    
          if(!(args.length%ballArgSet == 0)) {
-            timeSlice = timerSim.validateTimeSliceArg(args[args.length - 1]);
+            try {
+                timeSlice = timerSim.validateTimeSliceArg(args[args.length - 1]);
+            }
+            catch(NumberFormatException nfe) {
+                System.out.println("Argument Invalid: Your TimeSlice (in seconds) argument is out of bounds: (0,1800]\n");
+                System.exit(1);
+            }
          }   
      }
      
      public void reportingInterface() {
          DecimalFormat d1 = new DecimalFormat("#0.0000");
-         /* Initial Report */
-         
-         
+         System.out.println("INITIAL REPORT at " + timerSim.toString());         
+            for(int x = 0; x < numberOfBalls; x++) {
+                System.out.print(x + ":   position <" + d1.format(soccerBalls[x].getXCoor()) + "," + d1.format(soccerBalls[x].getYCoor()));
+                System.out.println(">   velocity <" + d1.format(soccerBalls[x].getXSpeed()) + "," + d1.format(soccerBalls[x].getYSpeed()) + ">");
+            }
+            System.out.println("Pole is located at (" + poleX + "," + poleY + ")\n");
+            
+
          while(soccerField.isNotEmpty() && soccerField.isMovement()) {
             timerSim.tick();
             System.out.println("PROGRESS REPORT at " + timerSim.toString());         
@@ -79,10 +105,10 @@
                 System.out.print(x + ":   position <" + d1.format(soccerBalls[x].getXCoor()) + "," + d1.format(soccerBalls[x].getYCoor()));
                 
                 if(soccerBalls[x].speedUpdate()) {
-                    System.out.println(">    velocity <" + d1.format(soccerBalls[x].getXSpeed()) + "," + d1.format(soccerBalls[x].getYSpeed()) + ">\n");
+                    System.out.println(">   velocity <" + d1.format(soccerBalls[x].getXSpeed()) + "," + d1.format(soccerBalls[x].getYSpeed()) + ">");
                 }
                 else {
-                    System.out.println(">    AT REST\n");
+                    System.out.println(">    AT REST");
                 }
             }
             soccerField.checkForCollision();

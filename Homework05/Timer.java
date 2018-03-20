@@ -89,9 +89,9 @@ public class Timer {
       double timeSliceArg = Double.parseDouble(argValue);
       
       if(timeSliceArg <= 0 || timeSliceArg > MAX_TIME_SLICE_IN_SECONDS) {
-          System.out.print("\nArgument Invalid: Your TimeSlice (in seconds) argument is out of bounds: (0,1800]\n");
-          System.exit(1);
+          throw new NumberFormatException("BAD");
       }   
+      
       timeSlice = timeSliceArg;
       return timeSlice;
    }

@@ -29,6 +29,7 @@
     private double secondCounter = 0;
     private double frictionDecimal = 0.01; 
     private double radiusInches = 4.45;
+    private double radiusFeet = radiusInches/INCHES_PER_FOOT;
     private double restVelocityInchesPerSecond = 1;
     
     
@@ -51,8 +52,7 @@
         double xCoor = Double.parseDouble(arg1);
         double yCoor = Double.parseDouble(arg2);
         if(Math.abs(xCoor) > (fieldXLength/2) || Math.abs(yCoor) > (fieldYLength/2)) {
-          System.out.print("\nArgument Invalid: Invalid off-field Coordinates can not be inputed");
-          System.exit(1);
+          throw new NumberFormatException("BAD");
         }   
         this.xCoor = xCoor;
         this.yCoor = yCoor;
@@ -69,7 +69,6 @@
     public void validateSpeeds( String arg1, String arg2 ) throws NumberFormatException {
         double xSpeed = Double.parseDouble(arg1);
         double ySpeed = Double.parseDouble(arg2);
-        //Does Speed have any invalid inputs??????????????????????????????????????????????????????????????????????????   
         this.xSpeed = xSpeed;
         this.ySpeed = ySpeed;
         return;

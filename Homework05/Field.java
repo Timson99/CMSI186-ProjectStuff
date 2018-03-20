@@ -57,11 +57,26 @@
      
     public boolean isMovement() {
        for(int x = 0; x<numberOfBalls; x++) {
-           if(soccerBalls[x].getYSpeed() != 0.0 && soccerBalls[x].getXSpeed() != 0.0) {
+           if(soccerBalls[x].getYSpeed() != 0.0 || soccerBalls[x].getXSpeed() != 0.0) {
                return true;
            }
        }
        return false;
+    }
+    
+    
+    public boolean hitPole(Ball ball) {
+        if(Math.abs(ball.getXCoor() - poleX) < ballRadiusFeet && Math.abs(ball.getYCoor() - poleY) < ballRadiusFeet) {
+            return true;
+        }
+        return false;
+    }
+    
+    public boolean hitBall(Ball ball1, Ball ball2) {
+        if(Math.abs(ball1.getXCoor() - ball2.getXCoor()) < (ballRadiusFeet * 2) && Math.abs(ball1.getYCoor() - ball2.getYCoor()) < (ballRadiusFeet * 2)) {
+            return true;
+        }
+        return false;
     }
     
     /*
@@ -69,8 +84,21 @@
       */
     public void checkForCollision() {
         
-        
-        
+       for(int x = 0; x < numberOfBalls; x++) {
+           if(hitPole(soccerBalls[x])) {
+               System.out.println("\n\nCollision of Ball " + x + " and pole");
+               System.exit(0);
+           }
+       }
+      
+       for(int x = 0; x < numberOfBalls; x++) {
+           for(int y = x+1; y < numberOfBalls; y++) {
+                if(hitBall(soccerBalls[x], soccerBalls[y])) {
+                    System.out.println("\n\nCollision of Ball " + x + " and Ball " + y);
+                    System.exit(0);
+                }
+           }
+       }
         
         
         
