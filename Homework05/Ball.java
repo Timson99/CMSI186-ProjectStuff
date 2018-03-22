@@ -123,18 +123,43 @@
       *  Method to Update Ball Movement by one Tick According to the Timer TimeSlice
       */
     public void positionUpdate() {
-        double xMovement = xSpeed * timeSlice;
-        double yMovement = ySpeed * timeSlice;
-        this.xCoor += xMovement;
-        this.yCoor += yMovement;
+            double fractionTimeSlice = timeSlice;
+            if(timeSlice >  1.0) {
+                if(timeSlice % 1.0 != 0) {
+                    fractionTimeSlice = timeSlice % 1.0;
+                }
+                else {
+                    fractionTimeSlice = 1.0;
+                }
+            }
+            double xMovement = xSpeed * fractionTimeSlice;
+            double yMovement = ySpeed * fractionTimeSlice;
+            this.xCoor += xMovement;
+            this.yCoor += yMovement;
+    }
+    
+    public void positionUpdateOneSecond() {
+            double xMovement = xSpeed;
+            double yMovement = ySpeed;
+            this.xCoor += xMovement;
+            this.yCoor += yMovement;
     }
     /**
       *  Method to Update Ball Speed by one Tick According to the Timer TimeSlice      
       *  @return  boolean      returns true only if the ball is in motion
       */
     public boolean speedUpdate() {
-            xSpeed = xSpeed - ((xSpeed * 0.01) * timeSlice);
-            ySpeed = ySpeed - ((ySpeed * 0.01) * timeSlice);
+            double fractionTimeSlice = timeSlice;
+            if(timeSlice >  1.0) {
+                if(timeSlice % 1.0 != 0) {
+                    fractionTimeSlice = timeSlice % 1.0;
+                }
+                else {
+                    fractionTimeSlice = 1.0;
+                }
+            }
+            xSpeed = xSpeed - ((xSpeed * (0.01)) * fractionTimeSlice);
+            ySpeed = ySpeed - ((ySpeed * 0.01) * fractionTimeSlice);
             double vectorVelocity = Math.pow(xSpeed * xSpeed + ySpeed * ySpeed, 0.5);
             
             if(vectorVelocity * INCHES_PER_FOOT < 1) {
@@ -143,7 +168,11 @@
                 return false;
             }
             return true;
-    } 
+    }
+    public void speedUpdateOneSecond() {
+            xSpeed = xSpeed - (xSpeed * (0.01));
+            ySpeed = ySpeed - ((ySpeed * 0.01));
+    }     
     
  }
  

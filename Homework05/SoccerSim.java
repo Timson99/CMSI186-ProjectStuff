@@ -27,8 +27,8 @@
  
     private static double poleX = 3;
     private static double poleY = 3;
-    private static double fieldXLength = 1000;
-    private static double fieldYLength = 1000;
+    private static double fieldXLength = 100000;
+    private static double fieldYLength = 100000;
     
     private Timer timerSim = new Timer();
     private Ball[] soccerBalls;
@@ -39,9 +39,7 @@
      }
      
      public void handleInitialArgs(String[] args) {
-         
-         
-         
+
          if(args.length < ballArgSet) {
              System.out.println("\nArguments Invalid: Cannot run with less than four arguments. Try again.\n");
              System.exit(1);
@@ -50,10 +48,20 @@
              System.out.println("\nArguments Invalid: Too many arguments inputed.\n");
              System.exit(1);
          } 
+         if(!(args.length%ballArgSet == 0)) {
+            try {
+                timeSlice = timerSim.validateTimeSliceArg(args[args.length - 1]);
+            }
+            catch(NumberFormatException nfe) {
+                System.out.println("Argument Invalid: Your TimeSlice (in seconds) argument is out of bounds: (0,1800]\n");
+                System.exit(1);
+            }
+         }   
          
          numberOfBalls = (int)(args.length/ballArgSet);
          soccerBalls = new Ball[numberOfBalls];
          soccerField = new Field(poleX, poleY, fieldXLength, fieldYLength, numberOfBalls, soccerBalls);
+         
          for(int x = 0; x<numberOfBalls; x++) {
              int count = ballArgSet * x;
              soccerBalls[x] = new Ball(fieldXLength, fieldYLength, timeSlice);
@@ -63,7 +71,7 @@
              }
              catch(NumberFormatException nfe) {
                 System.out.println("\nArgument Invalid: Invalid off-field Coordinates can not be inputed");
-                System.out.println("X MIN: -500\nX MAX: 500\nY MIN -500\nY MAX: 500");
+                System.out.println("X MIN: -50000\nX MAX: 50000\nY MIN -50000\nY MAX: 50000");
                 System.exit(1);
              }
           
@@ -75,16 +83,6 @@
                 System.exit(1);
              }
          }
-   
-         if(!(args.length%ballArgSet == 0)) {
-            try {
-                timeSlice = timerSim.validateTimeSliceArg(args[args.length - 1]);
-            }
-            catch(NumberFormatException nfe) {
-                System.out.println("Argument Invalid: Your TimeSlice (in seconds) argument is out of bounds: (0,1800]\n");
-                System.exit(1);
-            }
-         }   
      }
      
      public void reportingInterface() {
@@ -101,6 +99,13 @@
             timerSim.tick();
             System.out.println("PROGRESS REPORT at " + timerSim.toString());         
             for(int x = 0; x < numberOfBalls; x++) {
+                if(timeSlice > 1.00000001) {
+                    double counter;
+                    for(counter = timeSlice - 1; counter > 0; counter--) {
+                        soccerBalls[x].positionUpdateOneSecond();
+                        soccerBalls[x].speedUpdateOneSecond();
+                    }
+                }
                 soccerBalls[x].positionUpdate();
                 System.out.print(x + ":   position <" + d1.format(soccerBalls[x].getXCoor()) + "," + d1.format(soccerBalls[x].getYCoor()));
                 
