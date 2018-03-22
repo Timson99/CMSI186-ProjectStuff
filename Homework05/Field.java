@@ -74,7 +74,6 @@
     
     public boolean hitBall(Ball ball1, Ball ball2) {
         if(Math.abs(ball1.getXCoor() - ball2.getXCoor()) < (ballRadiusFeet * 2) && Math.abs(ball1.getYCoor() - ball2.getYCoor()) < (ballRadiusFeet * 2)) {
-            System.out.println(ball1.getXCoor() + " " + ball2.getXCoor() + " " + ball1.getYCoor() + " " + ball2.getYCoor());
             return true;
         }
         return false;

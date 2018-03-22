@@ -94,7 +94,7 @@
             }
             System.out.println("Pole is located at (" + poleX + "," + poleY + ")\n");
             
-
+        soccerField.checkForCollision();
          while(soccerField.isNotEmpty() && soccerField.isMovement()) {
             timerSim.tick();
             System.out.println("PROGRESS REPORT at " + timerSim.toString());         
