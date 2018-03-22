@@ -174,5 +174,120 @@
             ySpeed = ySpeed - ((ySpeed * 0.01));
     }     
     
+ 
+ 
+ public static void main(String[] args) {
+    
+    System.out.println("Initializing~~~~~~~~~~~~~~~~~~~");
+    Timer timer = new Timer();
+    try { System.out.println(("Should Error: " + timer.validateTimeSliceArg("abc") == "abc" ? "Good" : "Bad")); }
+    catch(NumberFormatException nfe) { System.out.println("Error"); }
+    try { System.out.println("Should Error: " + (timer.validateTimeSliceArg("0.0") == 0.0 ? "Good" : "Bad")); }
+    catch(NumberFormatException nfe) { System.out.println("Error"); }
+    try { System.out.println("Should Error: " + (timer.validateTimeSliceArg("2000.0") == 2000.0 ? "Good" : "Bad")); }
+    catch(NumberFormatException nfe) { System.out.println("Error"); }
+    try { System.out.println("Should be Good: " + (timer.validateTimeSliceArg("1.0") == 1.0 ? "Good" : "Bad")); }
+    catch(NumberFormatException nfe) { System.out.println("Error"); }
+    
+    Ball ball = new Ball(10000, 10000, 1.0);
+    System.out.println("\nTests for validateCoordinates()\n");
+    try { ball.validateCoordinates("blerg", "abc");
+    System.out.println("Good"); }
+    catch(NumberFormatException nfe) { System.out.println("Error"); }
+    try { ball.validateCoordinates("0.0", "abc");
+    System.out.println("Good"); }
+    catch(NumberFormatException nfe) { System.out.println("Error"); }
+    try { ball.validateCoordinates("10001", "10000");
+    System.out.println("Good"); }
+    catch(NumberFormatException nfe) { System.out.println("Error"); }
+    try { ball.validateCoordinates("10000", "10000");
+    System.out.println("Good"); }
+    catch(NumberFormatException nfe) { System.out.println("Error"); }
+    try { ball.validateCoordinates("0.0", "0.0");
+    System.out.println("Good"); }
+    catch(NumberFormatException nfe) { System.out.println("Error"); }
+    
+    System.out.println("\nTests for validateSpeeds()\n");
+    try { ball.validateSpeeds("blarg", "abc");
+    System.out.println("Good"); }
+    catch(NumberFormatException nfe) { System.out.println("Error"); }
+    try { ball.validateSpeeds("0.0", "abc");
+    System.out.println("Good"); }
+    catch(NumberFormatException nfe) { System.out.println("Error"); }
+    try { ball.validateSpeeds("0.0", "0.0");
+    System.out.println("Good"); }
+    catch(NumberFormatException nfe) { System.out.println("Error"); }
+    
+    System.out.println("\nTests for update methods"); 
+        Ball ball2 = new Ball(10000, 10000, 2.0);
+        Ball ball3 = new Ball(10000, 10000, 2.6);
+        Ball ball4 = new Ball(10000, 10000, 0.6);
+        try { ball2.validateCoordinates("0.0", "0.0"); }
+        catch(NumberFormatException nfe) { System.out.println("Error"); }
+        try { ball3.validateCoordinates("0.0", "0.0"); }
+        catch(NumberFormatException nfe) { System.out.println("Error"); }
+        try { ball4.validateCoordinates("0.0", "0.0"); }
+        catch(NumberFormatException nfe) { System.out.println("Error"); }
+        try { ball.validateSpeeds("2.0", "2.0");}
+        catch(NumberFormatException nfe) { System.out.println("Error"); }
+        try { ball2.validateSpeeds("2.0", "2.0");}
+        catch(NumberFormatException nfe) { System.out.println("Error"); }
+        try { ball3.validateSpeeds("2.0", "2.0");}
+        catch(NumberFormatException nfe) { System.out.println("Error"); }
+        try { ball4.validateSpeeds("2.0", "2.0");}
+        catch(NumberFormatException nfe) { System.out.println("Error"); }
+        
+        System.out.println("\n\nBall 1; TimeSlice 1.0; -- (" + ball.getXCoor() + "," + ball.getYCoor() + ") <" + ball.getXSpeed() + "," + ball.getYSpeed() + "> \n");
+        ball.positionUpdate();
+        ball.speedUpdate();
+        System.out.println("Update one slice; -- (" + ball.getXCoor() + "," + ball.getYCoor() + ") <" + ball.getXSpeed() + "," + ball.getYSpeed() + "> ");
+        ball.positionUpdate();
+        ball.speedUpdate();
+        System.out.println("Update one slice; -- (" + ball.getXCoor() + "," + ball.getYCoor() + ") <" + ball.getXSpeed() + "," + ball.getYSpeed() + "> ");
+        ball.positionUpdate();
+        ball.speedUpdate();
+        System.out.println("Update one slice; -- (" + ball.getXCoor() + "," + ball.getYCoor() + ") <" + ball.getXSpeed() + "," + ball.getYSpeed() + "> ");
+        ball.positionUpdate();
+        ball.speedUpdate();
+        System.out.println("Update one slice; -- (" + ball.getXCoor() + "," + ball.getYCoor() + ") <" + ball.getXSpeed() + "," + ball.getYSpeed() + "> ");
+        ball.positionUpdate();
+        ball.speedUpdate();
+        
+        System.out.println("\n\nBall 2; TimeSlice 2.0; -- (" + ball2.getXCoor() + "," + ball2.getYCoor() + ") <" + ball2.getXSpeed() + "," + ball2.getYSpeed() + "> \n");
+        System.out.println("SHOULD HAVE SAME CHANGES AS BALL1");
+        ball2.positionUpdate();
+        ball2.speedUpdate();
+        System.out.println("Update one slice; -- (" + ball2.getXCoor() + "," + ball2.getYCoor() + ") <" + ball2.getXSpeed() + "," + ball2.getYSpeed() + "> ");
+        ball2.positionUpdate();
+        ball2.speedUpdate();
+        System.out.println("Update one slice; -- (" + ball2.getXCoor() + "," + ball2.getYCoor() + ") <" + ball2.getXSpeed() + "," + ball2.getYSpeed() + "> ");
+        ball2.positionUpdate();
+        ball2.speedUpdate();
+        System.out.println("Update one slice; -- (" + ball2.getXCoor() + "," + ball2.getYCoor() + ") <" + ball2.getXSpeed() + "," + ball2.getYSpeed() + "> ");
+        ball2.positionUpdate();
+        ball2.speedUpdate();
+        System.out.println("Update one slice; -- (" + ball2.getXCoor() + "," + ball2.getYCoor() + ") <" + ball2.getXSpeed() + "," + ball2.getYSpeed() + "> ");
+        ball2.positionUpdate();
+        ball2.speedUpdate();
+        
+        System.out.println("\n\nBall 3; TimeSlice 2.6; -- (" + ball3.getXCoor() + "," + ball3.getYCoor() + ") <" + ball3.getXSpeed() + "," + ball3.getYSpeed() + "> \n");
+        ball3.positionUpdate();
+        ball3.speedUpdate();
+        System.out.println("Update one slice; -- (" + ball3.getXCoor() + "," + ball3.getYCoor() + ") <" + ball3.getXSpeed() + "," + ball3.getYSpeed() + "> ");
+        ball3.positionUpdate();
+        ball3.speedUpdate();
+        
+        System.out.println("\n\nBall 4; TimeSlice 0.6; -- (" + ball4.getXCoor() + "," + ball4.getYCoor() + ") <" + ball4.getXSpeed() + "," + ball4.getYSpeed() + "> \n");
+         System.out.println("SHOULD HAVE SAME CHANGES AS BALL3");
+        ball4.positionUpdate();
+        ball4.speedUpdate();
+        System.out.println("Update one slice; -- (" + ball4.getXCoor() + "," + ball4.getYCoor() + ") <" + ball4.getXSpeed() + "," + ball4.getYSpeed() + "> ");
+        ball4.positionUpdate();
+        ball4.speedUpdate();
+        
+        
+    }
  }
+
+
  
