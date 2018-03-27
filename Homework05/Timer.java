@@ -50,7 +50,7 @@ public class Timer {
    *  Method to maintain precision of seconds field.
    */
    public void calculatePrecision() {
-       totalSeconds = Math.round(totalSeconds * roundingValue)/roundingValue;  
+       totalSeconds = Math.round( totalSeconds * roundingValue )/roundingValue;  
    }
    
   /**
