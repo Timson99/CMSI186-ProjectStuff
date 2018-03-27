@@ -36,9 +36,16 @@
     
     // mimics one of the several java.math.BigInteger constructors
     //Optional Minus Sign?????????????? Character to Digit????????????????? ASK
+    //Must also learn to accept negatives for all methods
     public BrobInt( String value ) {
         long length = value.length();
-        for(int x = 0; x<length; x++) {
+        int counter = 0;
+        if(value.substring(x, x+1).equals("-")) {
+            digitStorage.add(Integer.parseInt(value.substring(x, x+2)));
+            counter = counter + 2;
+        }
+        for(int x = counter; x<length; x++) {
+
             digitStorage.add(Integer.parseInt(value.substring(x, x+1)));
         }
         storageSize = digitStorage.size();
@@ -79,6 +86,7 @@
     }
     
     // returns a BrobInt whose value is the difference of this minus the argument
+   
     public BrobInt subtract( BrobInt value ) {
         BrobInt calculation = new BrobInt("0");
         calculation.digitStorage.remove(0);
@@ -87,7 +95,7 @@
         int counter = 0;
         for( int index = size - 1; index >= 0; index-- ) {
             int rowSubtraction = digitStorage.get(digitStorage.size() - 1 - counter) - value.digitStorage.get(value.digitStorage.size() - 1 - counter) - tensPlace;
-            if(rowSubtraction < 0) {
+            if(rowSubtraction < 0 && !(index == 0 && storageSize == value.digitStorage.size())) {
                 rowSubtraction += 10;
                 tensPlace++;
                 if(tensPlace > 1) {
@@ -121,18 +129,52 @@
     }
     
     // returns a BrobInt whose value is the product of this times the argument
+    //Work on handling of 0s in subtracting same number situations, start with.equals in those cases
     public BrobInt multiply( BrobInt value ) {
-        return BrobInt.ONE;
+        BrobInt calculation = new BrobInt("0");
+        ArrayList<BrobInt> additionValues = new ArrayList<BrobInt>();
+        ArrayList<Integer>largerBrobIntList = (storageSize > value.digitStorage.size()) ? digitStorage : value.digitStorage; 
+        ArrayList<Integer>smallerBrobIntList = (storageSize > value.digitStorage.size()) ? value.digitStorage : digitStorage;
+        int counter = 0;
+        for( int index = smallerBrobIntList.size() - 1; index >= 0; index-- ) {
+            int tensPlace = 0;
+            additionValues.add(0, new BrobInt("0"));
+            additionValues.get(0).digitStorage.remove(0);
+            for(int x = 0; x < counter; x++) {
+                additionValues.get(0).digitStorage.add(0, 0);
+            }
+            for( int bigIndex = largerBrobIntList.size() - 1; bigIndex >= 0; bigIndex-- ) {
+                int temp = largerBrobIntList.get(bigIndex) * smallerBrobIntList.get(index) + tensPlace;
+                
+                tensPlace = (int)(temp/10);
+                temp = (int)(temp%10);
+                System.out.println("Temp: " + temp);
+                additionValues.get(0).digitStorage.add(0, temp);
+                
+            }
+            if(tensPlace != 0) {
+                additionValues.get(0).digitStorage.add(0, tensPlace);
+                System.out.println(additionValues.get(0).toString());
+            }
+            counter++;
+        }
+        for(int x = 0; x < additionValues.size(); x++) {
+            System.out.println(additionValues.get(x).toString());
+            calculation = new BrobInt(calculation.add(additionValues.get(x)).toString());
+        }
+        return calculation;
     }
-    
+
     // returns a BrobInt whose value is the quotient of this divided by the argument
     public BrobInt divide( BrobInt value ) {
-        return BrobInt.ONE;
+        
+        
+        
     }
    
     // returns a BrobInt whose value is the remainder of this divided by the argument
     public BrobInt remainder( BrobInt value ) {
-        return BrobInt.ONE;
+        return subtract(value.multiply(divide(value));
     }
     
     // returns the decimal string represention of this BrobInt
@@ -146,25 +188,35 @@
     
     // returns -1/0/1 as this BrobInt is numerically less than/equal to/greater than the value passed as the argument
     public int compareTo( BrobInt value ) {
-        if(value.toString().length() > toString().length()) {
-            return 1; //Depends on whether 0s are allowed at the beginning
+        if(value.toString().equals(toString()) {
+            return 0; //Depends on whether 0s are allowed at the beginning
         }
-        else if(value.toString().length() < toString().length()) {
+        if(value.toString().length() < toString().length()) {
             return -1;
         }
-        else if(value.toString().equals(toString())) {
-            return 0; 
+        else if(value.toString().length() > toString().length()) {
+            return 1;
         }
         else {
+            for(int i = 0; i<storageSize; i++) {
+                if(value.digitStorage.get(i) < digitStorage.get(i)) {
+                    return -1;
+                }
+                if(value.digitStorage.get(i) > digitStorage.get(i)) {
+                    return 1;
+                }
+            }
             return 0;
         }
     }
     
-    // returns true iff x is a BrobInt whose value is numerically equal to this BrobInt
+    // returns true if x is a BrobInt whose value is numerically equal to this BrobInt
     public boolean equals( Object x ) {
-        return true;
+        if(value.toString().equals(toString()) {
+            return true;
+        }
+        return false;
     }
-
     
     // a BrobInt "static factory" for constructing BrobInt out of longs
     public static BrobInt valueOf( long value ) {
@@ -185,6 +237,7 @@
         BrobInt first = new BrobInt(one);
         BrobInt second = new BrobInt(two);
         System.out.println("\n" + first.add(second).toString());
+        
         Scanner keyboard3 = new Scanner(System.in);
         Scanner keyboard4 = new Scanner(System.in);
         System.out.println("First Digit? (-)");
@@ -194,6 +247,16 @@
         BrobInt third = new BrobInt(three);
         BrobInt fourth = new BrobInt(four);
         System.out.println("\n" + third.subtract(fourth).toString());
+        
+        Scanner keyboard5 = new Scanner(System.in);
+        Scanner keyboard6 = new Scanner(System.in);
+        System.out.println("First Digit? (-)");
+        String five = keyboard5.nextLine();
+        System.out.println("Second Digit? (-)");
+        String six = keyboard6.nextLine();
+        BrobInt fifth = new BrobInt(five);
+        BrobInt sixth = new BrobInt(six);
+        System.out.println("\n" + fifth.multiply(sixth).toString());
         }
     }
  }
