@@ -32,6 +32,7 @@
     //Doesn't change for each instance
     private ArrayList<Integer> digitStorage = new ArrayList<Integer>();
     private int storageSize;
+    private boolean isNegative = false;
 
     
     // mimics one of the several java.math.BigInteger constructors
@@ -40,29 +41,88 @@
     public BrobInt( String value ) {
         long length = value.length();
         int counter = 0;
-        if(value.substring(x, x+1).equals("-")) {
-            digitStorage.add(Integer.parseInt(value.substring(x, x+2)));
+        if(value.substring(0, 1).equals("-")) {
+            digitStorage.add(Integer.parseInt(value.substring(0, 2)));
             counter = counter + 2;
+            isNegative = true;
         }
         for(int x = counter; x<length; x++) {
-
+            
             digitStorage.add(Integer.parseInt(value.substring(x, x+1)));
         }
         storageSize = digitStorage.size();
     }
     
-    // returns a BrobInt whose value is the sum of this plus the argument
+    
+    public BrobInt abs( BrobInt value) {
+        int temp = value.digitStorage.remove(0);
+        value.digitStorage.add(0, (int)Math.abs(temp));
+        return value;
+    }
+    public void abs() {
+        int temp = digitStorage.remove(0);
+        digitStorage.add(0, (int)Math.abs(temp));
+    }
+    
     public BrobInt add( BrobInt value ) {
-        BrobInt calculation = new BrobInt("0");
-        calculation.digitStorage.remove(0);
+        if(isNegative == value.isNegative) {
+            abs();
+            BrobInt temp = addSameSigns(abs(value));
+            if(isNegative)
+                return new BrobInt("-" + temp.toString());
+            
+            return temp;
+        }
+        else if(compareTo(value) == 1) {
+            abs();
+            BrobInt temp = subSameSigns(abs(value));
+            if(isNegative) {
+                return new BrobInt("-" + temp.toString());
+            }
+            else {
+                return temp;
+            }
+        }
+        else {
+            abs();
+            BrobInt temp = subSameSigns(abs(value));
+            if(!(isNegative)) {
+                return new BrobInt("-" + temp.toString());
+            }
+            else {
+                return temp;
+            }  
+        }
+        /*else {
+        }
+        */
+    }
+    public BrobInt subtract( BrobInt value ) {
+            abs();
+            BrobInt temp = subSameSigns(abs(value));
+            if(compareTo(value) == 0)
+                return ZERO;
+            
+            else if(compareTo(value) == 1) {
+               return new BrobInt("-" + temp.toString());
+            }
+            else {
+                return temp;
+            }
+            
+    }
+        
+    // returns a BrobInt whose value is the sum of this plus the argument
+    public BrobInt addSameSigns( BrobInt value ) {
         int size = (storageSize > value.digitStorage.size()) ? value.digitStorage.size() : storageSize; 
         int tensPlace = 0;
         int counter = 0;
+        String strTemp = "";
         for( int index = size - 1; index >= 0; index-- ) {
             int rowAddition = value.digitStorage.get(value.digitStorage.size() - 1 - counter) + digitStorage.get(digitStorage.size() - 1 - counter) + tensPlace;
             tensPlace = (int)(rowAddition/10);
             rowAddition = (int)rowAddition%10;
-            calculation.digitStorage.add(0, rowAddition);
+            strTemp = rowAddition + strTemp + "";
             counter++;
         }
         ArrayList<Integer> largerBrobIntList = ((storageSize > value.digitStorage.size()) ? digitStorage : value.digitStorage);
@@ -72,29 +132,52 @@
                 int temp = largerBrobIntList.get(index) + tensPlace;
                 tensPlace = (temp == 10 ? 1 : 0);
                 temp = (temp == 10 ? 0 : temp);
-                calculation.digitStorage.add(0, temp);
-
+                strTemp = temp  + strTemp + "";
             }
             else {
-                calculation.digitStorage.add(0, largerBrobIntList.get(index));
+                strTemp = largerBrobIntList.get(index)  + strTemp + "";
             }
         }
         if(tensPlace != 0) {
-            calculation.digitStorage.add(0, tensPlace);
+            strTemp = tensPlace + strTemp + "";
         }
-        return calculation;
+        return new BrobInt(parseNegatives(strTemp));
+    }
+    
+    public String parseNegatives(String value) {
+        String temp = "";
+        int x = 0;
+        if(value.length() > 0) {
+            temp = temp + value.substring(x, ++x);
+        }
+        for(; x < value.length(); x++ ) {
+            if(value.substring(x, x+1).equals("-")) {
+                continue;
+            }
+            
+            temp = temp + value.substring(x, x+1); 
+        }
+        return temp;
     }
     
     // returns a BrobInt whose value is the difference of this minus the argument
-   
-    public BrobInt subtract( BrobInt value ) {
+    //SubtractLarger from smalller and worry about signs later
+    public BrobInt subSameSigns( BrobInt value ) {
         BrobInt calculation = new BrobInt("0");
+        int rowSubtraction;
         calculation.digitStorage.remove(0);
-        int size = (storageSize > value.digitStorage.size()) ? value.digitStorage.size() : storageSize; 
+        ArrayList<Integer> largerValueBrobIntList = compareTo(value) == 1 ? digitStorage : value.digitStorage;
+        ArrayList<Integer> smallerValueBrobIntList = compareTo(value) == 1 ? value.digitStorage : digitStorage;
+        int size = smallerValueBrobIntList.size() < largerValueBrobIntList.size() ? smallerValueBrobIntList.size() : largerValueBrobIntList.size();
         int tensPlace = 0;
         int counter = 0;
         for( int index = size - 1; index >= 0; index-- ) {
-            int rowSubtraction = digitStorage.get(digitStorage.size() - 1 - counter) - value.digitStorage.get(value.digitStorage.size() - 1 - counter) - tensPlace;
+            if(compareTo(value) == 1 ? true : false) {
+                rowSubtraction = largerValueBrobIntList.get(digitStorage.size() - 1 - counter) - smallerValueBrobIntList.get(value.digitStorage.size() - 1 - counter) - tensPlace;
+            }
+            else {
+                rowSubtraction = largerValueBrobIntList.get(value.digitStorage.size() - 1 - counter) - smallerValueBrobIntList.get(digitStorage.size() - 1 - counter) - tensPlace;
+            }
             if(rowSubtraction < 0 && !(index == 0 && storageSize == value.digitStorage.size())) {
                 rowSubtraction += 10;
                 tensPlace++;
@@ -129,7 +212,7 @@
     }
     
     // returns a BrobInt whose value is the product of this times the argument
-    //Work on handling of 0s in subtracting same number situations, start with.equals in those cases
+    //WORKS
     public BrobInt multiply( BrobInt value ) {
         BrobInt calculation = new BrobInt("0");
         ArrayList<BrobInt> additionValues = new ArrayList<BrobInt>();
@@ -148,19 +231,16 @@
                 
                 tensPlace = (int)(temp/10);
                 temp = (int)(temp%10);
-                System.out.println("Temp: " + temp);
                 additionValues.get(0).digitStorage.add(0, temp);
                 
             }
             if(tensPlace != 0) {
                 additionValues.get(0).digitStorage.add(0, tensPlace);
-                System.out.println(additionValues.get(0).toString());
             }
             counter++;
         }
         for(int x = 0; x < additionValues.size(); x++) {
-            System.out.println(additionValues.get(x).toString());
-            calculation = new BrobInt(calculation.add(additionValues.get(x)).toString());
+            calculation = new BrobInt(calculation.addSameSigns(additionValues.get(x)).toString());
         }
         return calculation;
     }
@@ -168,51 +248,45 @@
     // returns a BrobInt whose value is the quotient of this divided by the argument
     public BrobInt divide( BrobInt value ) {
         
-        
+        return BrobInt.ONE;
         
     }
    
     // returns a BrobInt whose value is the remainder of this divided by the argument
     public BrobInt remainder( BrobInt value ) {
-        return subtract(value.multiply(divide(value));
+        return subtract(value.multiply(divide(value)));
     }
     
     // returns the decimal string represention of this BrobInt
     public String toString() {
         String str = "";
-        for(int x = 0; x < digitStorage.size(); x++) {
+        int x = 0;
+        if(digitStorage.size() > 0) {
             str = str + digitStorage.get(x);
+            x++; 
+        }
+        for(; x < digitStorage.size(); x++) {
+            str = str + Math.abs(digitStorage.get(x));
         }
         return str;
     }
     
     // returns -1/0/1 as this BrobInt is numerically less than/equal to/greater than the value passed as the argument
     public int compareTo( BrobInt value ) {
-        if(value.toString().equals(toString()) {
+        if(value.toString().equals(toString())) {
             return 0; //Depends on whether 0s are allowed at the beginning
         }
-        if(value.toString().length() < toString().length()) {
+        else if(toString().compareTo(value.toString()) < 0) {
             return -1;
         }
-        else if(value.toString().length() > toString().length()) {
-            return 1;
-        }
         else {
-            for(int i = 0; i<storageSize; i++) {
-                if(value.digitStorage.get(i) < digitStorage.get(i)) {
-                    return -1;
-                }
-                if(value.digitStorage.get(i) > digitStorage.get(i)) {
-                    return 1;
-                }
-            }
-            return 0;
+            return 1;
         }
     }
     
     // returns true if x is a BrobInt whose value is numerically equal to this BrobInt
     public boolean equals( Object x ) {
-        if(value.toString().equals(toString()) {
+        if(x.toString().equals(toString())) {
             return true;
         }
         return false;
