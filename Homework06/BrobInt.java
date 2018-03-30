@@ -66,30 +66,36 @@
     
     public BrobInt add( BrobInt value ) {
         if(isNegative == value.isNegative) {
+            if(isNegative) {
+                abs();
+                BrobInt temp = addSameSigns(abs(value));
+                return new BrobInt("-" + temp.toString());
+            }
             abs();
             BrobInt temp = addSameSigns(abs(value));
-            if(isNegative)
-                return new BrobInt("-" + temp.toString());
-            
             return temp;
         }
         else if(compareTo(value) == 1) {
-            abs();
-            BrobInt temp = subSameSigns(abs(value));
             if(isNegative) {
+                abs();
+                BrobInt temp = addSameSigns(abs(value));
                 return new BrobInt("-" + temp.toString());
             }
             else {
+                abs();
+                BrobInt temp = addSameSigns(abs(value));
                 return temp;
             }
         }
         else {
-            abs();
-            BrobInt temp = subSameSigns(abs(value));
             if(!(isNegative)) {
+                abs();
+                BrobInt temp = addSameSigns(abs(value));
                 return new BrobInt("-" + temp.toString());
             }
             else {
+                abs();
+                BrobInt temp = addSameSigns(abs(value));
                 return temp;
             }  
         }
@@ -98,24 +104,30 @@
         */
     }
     public BrobInt subtract( BrobInt value ) {
-            abs();
-            BrobInt temp = subSameSigns(abs(value));
             if(compareTo(value) == 0)
                 return ZERO;
             
             else if(compareTo(value) == 1) {
                if(isNegative) {
+                   abs();
+                    BrobInt temp = subSameSigns(abs(value));
                     return new BrobInt("-" + temp.toString());
                 }
                 else {
+                    abs();
+                    BrobInt temp = subSameSigns(abs(value));
                     return temp;
                 }
             }
             else {
                 if(!(isNegative)) {
+                    abs();
+                    BrobInt temp = subSameSigns(abs(value));
                     return new BrobInt("-" + temp.toString());
                 }
                 else {
+                    abs();
+                    BrobInt temp = subSameSigns(abs(value));
                     return temp;
                 } 
             }    
@@ -187,12 +199,11 @@
             else {
                 rowSubtraction = largerValueBrobIntList.get(value.digitStorage.size() - 1 - counter) - smallerValueBrobIntList.get(digitStorage.size() - 1 - counter) - tensPlace;
             }
+            tensPlace = 0;
             if(rowSubtraction < 0 && !(index == 0 && storageSize == value.digitStorage.size())) {
                 rowSubtraction += 10;
-                tensPlace++;
-                if(tensPlace > 1) {
-                    tensPlace--;
-                }
+                tensPlace = 1;
+                
             }
             calculation.digitStorage.add(0, rowSubtraction);
             counter++;
@@ -217,7 +228,7 @@
         if(calculation.digitStorage.get(0) == 0) {
             calculation.digitStorage.remove(0);
         }
-        return calculation;
+        return abs(calculation);
     }
     
     // returns a BrobInt whose value is the product of this times the argument
@@ -256,14 +267,23 @@
 
     // returns a BrobInt whose value is the quotient of this divided by the argument
     public BrobInt divide( BrobInt value ) {
-        
-        return BrobInt.ONE;
-        
+        BrobInt counter = new BrobInt("0");
+        BrobInt temp = new BrobInt("0");
+        while(true) {
+            temp = temp.add(value);
+            if(compareTo(temp) == -1) {
+                break;
+            }
+            counter = counter.add(ONE);
+        }
+        return new BrobInt(counter.toString()); 
     }
    
     // returns a BrobInt whose value is the remainder of this divided by the argument
     public BrobInt remainder( BrobInt value ) {
-        return subtract(value.multiply(divide(value)));
+        
+        return subSameSigns(value.multiply(divide(value)));
+        
     }
     
     // returns the decimal string represention of this BrobInt
@@ -281,6 +301,7 @@
     }
     
     // returns -1/0/1 as this BrobInt is numerically less than/equal to/greater than the value passed as the argument
+    /*
     public int compareTo( BrobInt value ) {
         if(value.toString().equals(toString())) {
             return 0; //Depends on whether 0s are allowed at the beginning
@@ -292,6 +313,29 @@
             return 1;
         }
     }
+    */
+    public int compareTo( BrobInt value ) {
+        if(value.toString().length() < toString().length()) {
+             return 1;
+         }
+        if(value.toString().equals(toString())) {
+            return 0; 
+        }
+        if(value.toString().length() > toString().length()) {
+            return -1;
+        }
+        else {
+            for(int i = 0; i<storageSize; i++) {
+                if(value.digitStorage.get(i) < digitStorage.get(i)) {
+                    return 1;
+                }
+                if(value.digitStorage.get(i) > digitStorage.get(i)) {
+                    return -1;
+                }
+            }
+             return 0;
+         }
+     }
     
     // returns true if x is a BrobInt whose value is numerically equal to this BrobInt
     public boolean equals( Object x ) {
