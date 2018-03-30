@@ -566,10 +566,9 @@
         double rand2 = Math.random();
         BigInteger bI = BigInteger.valueOf((long)(rand1 * 100)).subtract(BigInteger.valueOf((long)(rand2 * 100)));
         BrobInt bR =       BrobInt.valueOf((long)(rand1 * 100)).subtract(BrobInt.valueOf((long)(rand2 * 100)));
-        System.out.println((long)(rand1 * 100) + " - " + (long)(rand2 * 100));
-        System.out.println("\n" + bR.toString());
-        System.out.println(bI.toString());
-        System.out.print(bR.toString().equals(bI.toString()) ? "true\n" : "wrong\n");
+        System.out.print((long)(rand1 * 100) + " - " + (long)(rand2 * 100) + " ");
+        System.out.print(bR.toString());
+        System.out.println(bR.toString().equals(bI.toString()) ? "true\n" : "wrong\n");
       }
     
       System.exit( 0 );

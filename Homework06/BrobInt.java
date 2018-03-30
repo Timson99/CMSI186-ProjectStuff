@@ -104,12 +104,21 @@
                 return ZERO;
             
             else if(compareTo(value) == 1) {
-               return new BrobInt("-" + temp.toString());
+               if(isNegative) {
+                    return new BrobInt("-" + temp.toString());
+                }
+                else {
+                    return temp;
+                }
             }
             else {
-                return temp;
-            }
-            
+                if(!(isNegative)) {
+                    return new BrobInt("-" + temp.toString());
+                }
+                else {
+                    return temp;
+                } 
+            }    
     }
         
     // returns a BrobInt whose value is the sum of this plus the argument
