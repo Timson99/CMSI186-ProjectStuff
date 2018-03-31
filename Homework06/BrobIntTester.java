@@ -564,11 +564,25 @@
       for(int x = 0; x < 10; x++) {
         double rand1 = Math.random();
         double rand2 = Math.random();
-        BigInteger bI = BigInteger.valueOf((long)(rand1 * 100)).subtract(BigInteger.valueOf((long)(rand2 * 100)));
-        BrobInt bR =       BrobInt.valueOf((long)(rand1 * 100)).subtract(BrobInt.valueOf((long)(rand2 * 100)));
-        System.out.print((long)(rand1 * 100) + " - " + (long)(rand2 * 100) + " ");
-        System.out.print(bR.toString());
-        System.out.println(bR.toString().equals(bI.toString()) ? "true\n" : "wrong\n");
+        BigInteger bI = BigInteger.valueOf(MAX_LONG/2).add(BigInteger.valueOf((long)(rand1 * MAX_LONG)).subtract(BigInteger.valueOf((long)(rand2 * MAX_LONG))));
+        BrobInt bR =  BrobInt.valueOf(MAX_LONG/2).add(BrobInt.valueOf((long)(rand1 * MAX_LONG)).subtract(BrobInt.valueOf((long)(rand2 * MAX_LONG))));
+        System.out.print(bR.toString().equals(bI.toString()) ? "true" : "wrong");
+      }
+      System.out.println("\n");
+      for(int x = 0; x < 10; x++) {
+        double rand1 = Math.random();
+        double rand2 = Math.random();
+        BigInteger bI = BigInteger.valueOf(MAX_LONG/2).add(BigInteger.valueOf((long)(rand1 * MAX_LONG)).divide(BigInteger.valueOf((long)(rand2 * MAX_LONG))));
+        BrobInt bR =  BrobInt.valueOf(MAX_LONG/2).add(BrobInt.valueOf((long)(rand1 * MAX_LONG)).divide(BrobInt.valueOf((long)(rand2 * MAX_LONG))));
+        System.out.print(bR.toString().equals(bI.toString()) ? "true" : "wrong");
+      }
+      System.out.println("\n");
+      for(int x = 0; x < 10; x++) {
+        double rand1 = Math.random();
+        double rand2 = Math.random();
+        BigInteger bI = BigInteger.valueOf(MAX_LONG/2).add(BigInteger.valueOf((long)(rand1 * MAX_LONG)).remainder(BigInteger.valueOf((long)(rand2 * MAX_LONG))));
+        BrobInt bR =  BrobInt.valueOf(MAX_LONG/2).add(BrobInt.valueOf((long)(rand1 * MAX_LONG)).remainder(BrobInt.valueOf((long)(rand2 * MAX_LONG))));
+        System.out.print(bR.toString().equals(bI.toString()) ? "true" : "wrong");
       }
     
       System.exit( 0 );

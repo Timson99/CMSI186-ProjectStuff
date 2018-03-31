@@ -282,8 +282,15 @@
     // returns a BrobInt whose value is the remainder of this divided by the argument
     public BrobInt remainder( BrobInt value ) {
         
-        return subSameSigns(value.multiply(divide(value)));
+        return removeZeroes(subSameSigns(value.multiply(divide(value))));
         
+    }
+    
+    public BrobInt removeZeroes(BrobInt value) {
+        while(value.digitStorage.get(0) == 0) {
+            value.digitStorage.remove(0);
+        }
+        return value;
     }
     
     // returns the decimal string represention of this BrobInt
