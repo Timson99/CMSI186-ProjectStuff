@@ -39,7 +39,7 @@
     //Optional Minus Sign?????????????? Character to Digit????????????????? ASK
     //Must also learn to accept negatives for all methods
     public BrobInt( String value ) {
-        long length = value.length();
+       long length = value.length();
         int counter = 0;
         if(value.substring(0, 1).equals("-")) {
             digitStorage.add(Integer.parseInt(value.substring(0, 2)));
@@ -53,84 +53,71 @@
         storageSize = digitStorage.size();
     }
     
-    
-    public BrobInt abs( BrobInt value) {
+    public BrobInt abs( BrobInt value ) {
         int temp = value.digitStorage.remove(0);
         value.digitStorage.add(0, (int)Math.abs(temp));
+        value.isNegative = false;
         return value;
-    }
-    public void abs() {
-        int temp = digitStorage.remove(0);
-        digitStorage.add(0, (int)Math.abs(temp));
     }
     
     public BrobInt add( BrobInt value ) {
         if(isNegative == value.isNegative) {
             if(isNegative) {
-                abs();
-                BrobInt temp = addSameSigns(abs(value));
+                BrobInt temp = abs(new BrobInt(toString())).addSameSigns(abs(new BrobInt(value.toString())));
                 return new BrobInt("-" + temp.toString());
             }
-            abs();
-            BrobInt temp = addSameSigns(abs(value));
-            return temp;
+            return abs(new BrobInt(toString())).addSameSigns(abs(new BrobInt(value.toString())));
         }
-        else if(compareTo(value) == 1) {
+        else if(abs(new BrobInt(toString())).compareTo(abs(new BrobInt(value.toString()))) == 1) {
+            //System.out.println("Test1");
             if(isNegative) {
-                abs();
-                BrobInt temp = addSameSigns(abs(value));
+                BrobInt temp = abs(new BrobInt(toString())).subDifference(abs(new BrobInt(value.toString())));
                 return new BrobInt("-" + temp.toString());
             }
             else {
-                abs();
-                BrobInt temp = addSameSigns(abs(value));
-                return temp;
+                return abs(new BrobInt(toString())).subDifference(abs(new BrobInt(value.toString())));
             }
         }
         else {
+            //System.out.println("Test2");
             if(!(isNegative)) {
-                abs();
-                BrobInt temp = addSameSigns(abs(value));
+                BrobInt temp = abs(new BrobInt(toString())).subDifference(abs(new BrobInt(value.toString())));
                 return new BrobInt("-" + temp.toString());
             }
             else {
-                abs();
-                BrobInt temp = addSameSigns(abs(value));
-                return temp;
+                return abs(new BrobInt(toString())).subDifference(abs(new BrobInt(value.toString())));
             }  
         }
-        /*else {
-        }
-        */
+       
     }
     public BrobInt subtract( BrobInt value ) {
-            if(compareTo(value) == 0)
-                return ZERO;
-            
-            else if(compareTo(value) == 1) {
-               if(isNegative) {
-                   abs();
-                    BrobInt temp = subSameSigns(abs(value));
-                    return new BrobInt("-" + temp.toString());
-                }
-                else {
-                    abs();
-                    BrobInt temp = subSameSigns(abs(value));
-                    return temp;
-                }
+        if(compareTo(value) == 0) {
+            return ZERO;
+        }
+        else if(isNegative == value.isNegative) {
+            if(isNegative) {
+                return add(abs(new BrobInt(value.toString())));
+            }
+            return add(new BrobInt("-" + value.toString()));
+            }
+        else if(abs(new BrobInt(toString())).compareTo(abs(new BrobInt(value.toString()))) == 1) {
+            if(isNegative) {
+                BrobInt temp = abs(new BrobInt(toString())).addSameSigns(abs(new BrobInt(value.toString())));
+                return new BrobInt("-" + temp.toString());
             }
             else {
-                if(!(isNegative)) {
-                    abs();
-                    BrobInt temp = subSameSigns(abs(value));
+                return abs(new BrobInt(toString())).addSameSigns(abs(new BrobInt(value.toString())));
+            }
+        }
+        else {
+            if(isNegative) {
+                    BrobInt temp = abs(new BrobInt(toString())).addSameSigns(abs(new BrobInt(value.toString())));
                     return new BrobInt("-" + temp.toString());
-                }
-                else {
-                    abs();
-                    BrobInt temp = subSameSigns(abs(value));
-                    return temp;
-                } 
-            }    
+            }
+            else {
+                    return abs(new BrobInt(toString())).addSameSigns(abs(new BrobInt(value.toString())));
+            } 
+        }    
     }
         
     // returns a BrobInt whose value is the sum of this plus the argument
@@ -183,7 +170,7 @@
     
     // returns a BrobInt whose value is the difference of this minus the argument
     //SubtractLarger from smalller and worry about signs later
-    public BrobInt subSameSigns( BrobInt value ) {
+    public BrobInt subDifference( BrobInt value ) {
         BrobInt calculation = new BrobInt("0");
         int rowSubtraction;
         calculation.digitStorage.remove(0);
@@ -276,14 +263,15 @@
             }
             counter = counter.add(ONE);
         }
+        if(isNegative || value.isNegative) {
+            return new BrobInt("-" + counter.toString()); 
+        }
         return new BrobInt(counter.toString()); 
     }
    
     // returns a BrobInt whose value is the remainder of this divided by the argument
     public BrobInt remainder( BrobInt value ) {
-        
-        return removeZeroes(subSameSigns(value.multiply(divide(value))));
-        
+        return removeZeroes(subDifference(value.multiply(divide(value))));
     }
     
     public BrobInt removeZeroes(BrobInt value) {
@@ -307,20 +295,6 @@
         return str;
     }
     
-    // returns -1/0/1 as this BrobInt is numerically less than/equal to/greater than the value passed as the argument
-    /*
-    public int compareTo( BrobInt value ) {
-        if(value.toString().equals(toString())) {
-            return 0; //Depends on whether 0s are allowed at the beginning
-        }
-        else if(toString().compareTo(value.toString()) < 0) {
-            return -1;
-        }
-        else {
-            return 1;
-        }
-    }
-    */
     public int compareTo( BrobInt value ) {
         if(value.toString().length() < toString().length()) {
              return 1;
@@ -384,13 +358,23 @@
         
         Scanner keyboard5 = new Scanner(System.in);
         Scanner keyboard6 = new Scanner(System.in);
-        System.out.println("First Digit? (-)");
+        System.out.println("First Digit? (x)");
         String five = keyboard5.nextLine();
-        System.out.println("Second Digit? (-)");
+        System.out.println("Second Digit? (x)");
         String six = keyboard6.nextLine();
         BrobInt fifth = new BrobInt(five);
         BrobInt sixth = new BrobInt(six);
         System.out.println("\n" + fifth.multiply(sixth).toString());
+        
+        Scanner keyboard7 = new Scanner(System.in);
+        Scanner keyboard8 = new Scanner(System.in);
+        System.out.println("First Digit? (/)");
+        String seven = keyboard7.nextLine();
+        System.out.println("Second Digit? (/)");
+        String eight = keyboard8.nextLine();
+        BrobInt seventh = new BrobInt(seven);
+        BrobInt eighth = new BrobInt(eight);
+        System.out.println("\n" + seventh.divide(eighth).toString());
         }
     }
  }
