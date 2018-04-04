@@ -15,7 +15,7 @@
  *           -----  ----------  ------------  -----------------------------------------------------------
  *  @version 1.0.0  2018-03-22 T. Herrmann  Initial writing and release
  * ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
- 
+ import java.util.*;
  public class Fibonacci {
      
    private static final String usageMessage = "\n  You must enter an integer number....." +
@@ -74,7 +74,7 @@
 
       System.out.println( "\n\n   Starting from zero, the " + maxCount + cardinality + " Fibonacci number is: " );
 
-     // NOTE: you may want to handle the first and second Fibonacc numbers as 'special cases'...
+     // NOTE: you may want to handle the first and second Fibonacci numbers as 'special cases'...
 
      // NOTE: you WILL need to initialize your BrobInts to keep track of things....
 
@@ -82,10 +82,27 @@
       if( maxCount > working ) {
          System.out.println( "\n                This may take me a while; please be patient!!\n\n" );
       }
-
-      System.out.println( "\n\n\n  ...HA!! Like I'm going to do the ENTIRE thing for you.....  *grins*" );
-
-
+        
+      ArrayList<BrobInt> fibList = new ArrayList<BrobInt>();
+      fibList.add(BrobInt.ZERO);
+      fibList.add(BrobInt.ONE); 
+      for(int x = 1; x<=maxCount; x++) {
+          if( x == 1 ) {
+              continue;
+          }
+          if( x == 2 ) {
+              continue;
+          }
+          BrobInt temp = fibList.get(0).addSameSigns(fibList.get(1));
+          fibList.add(temp);
+          fibList.remove(0); 
+      }
+      if( maxCount == 1 ) {
+        System.out.println("0");
+      }
+      else {
+        System.out.println(fibList.get(1).toString());
+      }
       System.exit( 0 );
    }
      
