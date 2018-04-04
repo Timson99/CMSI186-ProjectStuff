@@ -55,7 +55,13 @@
                 digitStorage.add(Integer.parseInt(value.substring(x, x+1)));
                 }
                 catch (NumberFormatException nfe) {
-                    continue;
+                    if(value.substring(x, x+1).equals("-")) {
+                        continue;
+                    }
+                    else {
+                        System.out.print(nfe.toString());
+                        System.exit(-1);
+                    }
                 }
             }
         }
@@ -241,7 +247,12 @@
     }
     
     public BrobInt multiply( BrobInt value ) {
-        BrobInt calculation = new BrobInt(abs(new BrobInt(toString())).multiplyAbs(new BrobInt(value.toString())).toString());
+        BrobInt calculation = new BrobInt(abs(new BrobInt(toString())).multiplyAbs(new BrobInt(abs(new BrobInt(value.toString())).toString())).toString());
+        //System.out.println(new BrobInt(abs(new BrobInt(toString())).toString()));
+        //System.out.println(new BrobInt(abs(new BrobInt(value.toString())).toString()));
+        if(value.equals(ZERO) || equals(ZERO)) {
+            return ZERO;
+        }
         if(isNegative == value.isNegative) {
             return calculation;
         }
@@ -327,10 +338,11 @@
             return new BrobInt(toString());
         
         BrobInt calculation = removeZeroes(abs(new BrobInt(toString())).subDifference(abs(new BrobInt(value.toString())).multiply(abs(new BrobInt(toString())).divide(abs(new BrobInt(value.toString()))))));
-        if(isNegative != value.isNegative) {
-            return new BrobInt("-" + calculation.toString()); 
+        
+       if(isNegative != value.isNegative) {
+            return new BrobInt("-" + abs(calculation).toString()); 
         }
-        return new BrobInt(calculation.toString()); 
+        return new BrobInt(abs(calculation).toString()); 
     }
     
     public BrobInt removeZeroes(BrobInt value) {

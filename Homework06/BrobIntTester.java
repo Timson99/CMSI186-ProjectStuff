@@ -544,10 +544,10 @@
       }
       catch( Exception e ) { System.out.println( "        Exception thrown:  " + e.toString() ); }
       
-      long scalingFactor = 500;
+      long scalingFactor = MAX_LONG;
       BrobInt brobStartingPoint = BrobInt.valueOf(scalingFactor/-2);
       BigInteger bigStartingPoint = BigInteger.valueOf(scalingFactor/-2);
-      for(int x = 0; x < 100; x++) {
+      for(int x = 0; x < 1000; x++) {
         double rand1 = Math.random();
         double rand2 = Math.random();
         BrobInt brobValue1 = brobStartingPoint.add(BrobInt.valueOf((long)(rand1 * scalingFactor)));
@@ -560,7 +560,7 @@
         //System.out.println(bigValue1.toString()  + " + " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
       }
       System.out.println("\n");
-      for(int x = 0; x < 100; x++) {
+      for(int x = 0; x < 1000; x++) {
         double rand1 = Math.random();
         double rand2 = Math.random();
         BrobInt brobValue1 = brobStartingPoint.add(BrobInt.valueOf((long)(rand1 * scalingFactor)));
@@ -573,7 +573,7 @@
         //System.out.println(bigValue1.toString()  + " - " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
       }
       System.out.println("\n");
-      for(int x = 0; x < 10; x++) {
+      for(int x = 0; x < 1000; x++) {
         double rand1 = Math.random();
         double rand2 = Math.random();
         BrobInt brobValue1 = brobStartingPoint.add(BrobInt.valueOf((long)(rand1 * scalingFactor)));
@@ -583,29 +583,37 @@
         BigInteger bI = (bigValue1).multiply(bigValue2);
         BrobInt bR = (brobValue1).multiply(brobValue2);
         System.out.print(bR.toString().equals(bI.toString()) ? "true  " : "wrong  ");
-        System.out.println(bigValue1.toString()  + " x " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
+        //System.out.println(bigValue1.toString()  + " x " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
       }
       System.out.println("\n");
-      for(int x = 0; x < 100; x++) {
+      for(int x = 0; x < 1000; x++) {
         double rand1 = Math.random();
         double rand2 = Math.random();
         BrobInt brobValue1 = brobStartingPoint.add(BrobInt.valueOf((long)(rand1 * scalingFactor)));
         BrobInt brobValue2 = brobStartingPoint.add(BrobInt.valueOf((long)(rand2 * scalingFactor)));
         BigInteger bigValue1 = bigStartingPoint.add(BigInteger.valueOf((long)(rand1 * scalingFactor)));
         BigInteger bigValue2 = bigStartingPoint.add(BigInteger.valueOf((long)(rand2 * scalingFactor)));
+        if(brobValue2.equals(BrobInt.ZERO)) {
+            brobValue2 = brobValue2.add(BrobInt.ONE);
+            bigValue2 = bigValue2.add(BigInteger.ONE);
+        }
         BigInteger bI = (bigValue1).divide(bigValue2);
         BrobInt bR = (brobValue1).divide(brobValue2);
         System.out.print(bR.toString().equals(bI.toString()) ? "true  " : "wrong  ");
         //System.out.println(bigValue1.toString()  + " / " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
       }
       System.out.println("\n");
-      for(int x = 0; x < 100; x++) {
+      for(int x = 0; x < 1000; x++) {
         double rand1 = Math.random();
         double rand2 = Math.random();
-        BrobInt brobValue1 = brobStartingPoint.add(BrobInt.valueOf((long)(rand1 * scalingFactor)));
-        BrobInt brobValue2 = brobStartingPoint.add(BrobInt.valueOf((long)(rand2 * scalingFactor)));
-        BigInteger bigValue1 = bigStartingPoint.add(BigInteger.valueOf((long)(rand1 * scalingFactor)));
-        BigInteger bigValue2 = bigStartingPoint.add(BigInteger.valueOf((long)(rand2 * scalingFactor)));
+        BrobInt brobValue1 = BrobInt.ZERO.add(BrobInt.valueOf((long)(rand1 * scalingFactor)));
+        BrobInt brobValue2 = BrobInt.ZERO.add(BrobInt.valueOf((long)(rand2 * scalingFactor)));
+        BigInteger bigValue1 = BigInteger.ZERO.add(BigInteger.valueOf((long)(rand1 * scalingFactor)));
+        BigInteger bigValue2 = BigInteger.ZERO.add(BigInteger.valueOf((long)(rand2 * scalingFactor)));
+        if(brobValue2.equals(BrobInt.ZERO)) {
+            brobValue2 = brobValue2.add(BrobInt.ONE);
+            bigValue2 = bigValue2.add(BigInteger.ONE);
+        }
         BigInteger bI = (bigValue1).remainder(bigValue2);
         BrobInt bR = (brobValue1).remainder(brobValue2);
         System.out.print(bR.toString().equals(bI.toString()) ? "true  " : "wrong  ");
