@@ -86,14 +86,8 @@
       ArrayList<BrobInt> fibList = new ArrayList<BrobInt>();
       fibList.add(BrobInt.ZERO);
       fibList.add(BrobInt.ONE); 
-      for(int x = 1; x<=maxCount; x++) {
-          if( x == 1 ) {
-              continue;
-          }
-          if( x == 2 ) {
-              continue;
-          }
-          BrobInt temp = fibList.get(0).addSameSigns(fibList.get(1));
+      for(int x = 3; x<=maxCount; x++) {
+          BrobInt temp = fibList.get(0).add(fibList.get(1));
           fibList.add(temp);
           fibList.remove(0); 
       }

@@ -544,10 +544,13 @@
       }
       catch( Exception e ) { System.out.println( "        Exception thrown:  " + e.toString() ); }
       
+      
       long scalingFactor = MAX_LONG;
       BrobInt brobStartingPoint = BrobInt.valueOf(scalingFactor/-2);
       BigInteger bigStartingPoint = BigInteger.valueOf(scalingFactor/-2);
-      for(int x = 0; x < 1000; x++) {
+      int numOfTests = 20;
+      System.out.println("\n\t" + numOfTests + " Addition Tests using random values from: \n\t[ " + brobStartingPoint + " , " + (brobStartingPoint.add(BrobInt.valueOf(scalingFactor))) + " )\n");
+      for(int x = 0; x < numOfTests; x++) {
         double rand1 = Math.random();
         double rand2 = Math.random();
         BrobInt brobValue1 = brobStartingPoint.add(BrobInt.valueOf((long)(rand1 * scalingFactor)));
@@ -557,10 +560,11 @@
         BigInteger bI = (bigValue1).add(bigValue2);
         BrobInt bR = (brobValue1).add(brobValue2);
         System.out.print(bR.toString().equals(bI.toString()) ? "true  " : "wrong  ");
-        //System.out.println(bigValue1.toString()  + " + " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
+        System.out.println(bigValue1.toString()  + " + " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
       }
       System.out.println("\n");
-      for(int x = 0; x < 1000; x++) {
+      System.out.println("\n\t" + numOfTests + " Subtraction Tests using random values from: \n\t[ " + brobStartingPoint + " , " + (brobStartingPoint.add(BrobInt.valueOf(scalingFactor))) + " )\n");
+      for(int x = 0; x < numOfTests; x++) {
         double rand1 = Math.random();
         double rand2 = Math.random();
         BrobInt brobValue1 = brobStartingPoint.add(BrobInt.valueOf((long)(rand1 * scalingFactor)));
@@ -570,10 +574,11 @@
         BigInteger bI = (bigValue1).subtract(bigValue2);
         BrobInt bR = (brobValue1).subtract(brobValue2);
         System.out.print(bR.toString().equals(bI.toString()) ? "true  " : "wrong  ");
-        //System.out.println(bigValue1.toString()  + " - " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
+        System.out.println(bigValue1.toString()  + " - " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
       }
       System.out.println("\n");
-      for(int x = 0; x < 1000; x++) {
+      System.out.println("\n\t" + numOfTests + " Multiplication Tests using random values from: \n\t[ " + brobStartingPoint + " , " + (brobStartingPoint.add(BrobInt.valueOf(scalingFactor))) + " )\n");
+      for(int x = 0; x < numOfTests; x++) {
         double rand1 = Math.random();
         double rand2 = Math.random();
         BrobInt brobValue1 = brobStartingPoint.add(BrobInt.valueOf((long)(rand1 * scalingFactor)));
@@ -583,10 +588,11 @@
         BigInteger bI = (bigValue1).multiply(bigValue2);
         BrobInt bR = (brobValue1).multiply(brobValue2);
         System.out.print(bR.toString().equals(bI.toString()) ? "true  " : "wrong  ");
-        //System.out.println(bigValue1.toString()  + " x " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
+        System.out.println(bigValue1.toString()  + " x " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
       }
       System.out.println("\n");
-      for(int x = 0; x < 1000; x++) {
+      System.out.println("\n\t" + numOfTests + " Division Tests using random values from: \n\t[ " + brobStartingPoint + " , 0) U (0 , " + (brobStartingPoint.add(BrobInt.valueOf(scalingFactor))) + " )\n");
+      for(int x = 0; x < numOfTests; x++) {
         double rand1 = Math.random();
         double rand2 = Math.random();
         BrobInt brobValue1 = brobStartingPoint.add(BrobInt.valueOf((long)(rand1 * scalingFactor)));
@@ -600,10 +606,11 @@
         BigInteger bI = (bigValue1).divide(bigValue2);
         BrobInt bR = (brobValue1).divide(brobValue2);
         System.out.print(bR.toString().equals(bI.toString()) ? "true  " : "wrong  ");
-        //System.out.println(bigValue1.toString()  + " / " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
+        System.out.println(bigValue1.toString()  + " / " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
       }
       System.out.println("\n");
-      for(int x = 0; x < 1000; x++) {
+      System.out.println("\n\t" + numOfTests + " Remainder Tests using random values from: \n\t(0 , " + (BrobInt.ZERO.add(BrobInt.valueOf(scalingFactor))) + " )\n");
+      for(int x = 0; x < numOfTests; x++) {
         double rand1 = Math.random();
         double rand2 = Math.random();
         BrobInt brobValue1 = BrobInt.ZERO.add(BrobInt.valueOf((long)(rand1 * scalingFactor)));
@@ -617,7 +624,7 @@
         BigInteger bI = (bigValue1).remainder(bigValue2);
         BrobInt bR = (brobValue1).remainder(brobValue2);
         System.out.print(bR.toString().equals(bI.toString()) ? "true  " : "wrong  ");
-        //System.out.println(bigValue1.toString()  + " mod " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
+        System.out.println(bigValue1.toString()  + " mod " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
       }
     
       System.exit( 0 );
