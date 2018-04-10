@@ -18,7 +18,7 @@
  import java.util.*;
  public class Fibonacci {
      
-   private static final String usageMessage = "\n  You must enter an integer number....." +
+   private static final String usageMessage = "\n  You must enter an integer number greater than 0....." +
                                               "\n    Please try again!" +
                                               "\n  USAGE: java Fibonacci <required_integer>\n\n";
    private static int    maxCount    = 0;
@@ -44,11 +44,15 @@
       }
       try {
          maxCount = Integer.parseInt( args[0] );
+         if(maxCount <= 0) {
+             throw new NumberFormatException();
+         }
       }
       catch( NumberFormatException nfe ) {
          System.out.println( "\n   Sorry, that does not compute!!" + usageMessage );
          System.exit( BAD_CMD_LINE_ARG );
       }
+      
       if( 2 == args.length ) {
          try {
             working = Integer.parseInt( args[1] );

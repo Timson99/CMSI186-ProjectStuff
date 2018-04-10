@@ -544,11 +544,14 @@
       }
       catch( Exception e ) { System.out.println( "        Exception thrown:  " + e.toString() ); }
       
-      
+      //Control Panel
       long scalingFactor = MAX_LONG;
+      int numOfTests = 10;
+      
       BrobInt brobStartingPoint = BrobInt.valueOf(scalingFactor/-2);
       BigInteger bigStartingPoint = BigInteger.valueOf(scalingFactor/-2);
-      int numOfTests = 20;
+      System.out.println("\n\nRandom Test Key:\nRandom Value One (+,-,x,/,mod) Random Value Two = BigInteger Answer -> BrobInt Answer");
+      System.out.println("*All answers tested using BigInteger*\n");
       System.out.println("\n\t" + numOfTests + " Addition Tests using random values from: \n\t[ " + brobStartingPoint + " , " + (brobStartingPoint.add(BrobInt.valueOf(scalingFactor))) + " )\n");
       for(int x = 0; x < numOfTests; x++) {
         double rand1 = Math.random();
@@ -559,7 +562,7 @@
         BigInteger bigValue2 = bigStartingPoint.add(BigInteger.valueOf((long)(rand2 * scalingFactor)));
         BigInteger bI = (bigValue1).add(bigValue2);
         BrobInt bR = (brobValue1).add(brobValue2);
-        System.out.print(bR.toString().equals(bI.toString()) ? "true  " : "wrong  ");
+        System.out.print(bR.toString().equals(bI.toString()) ? "correct  " : "wrong  ");
         System.out.println(bigValue1.toString()  + " + " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
       }
       System.out.println("\n");
@@ -573,7 +576,7 @@
         BigInteger bigValue2 = bigStartingPoint.add(BigInteger.valueOf((long)(rand2 * scalingFactor)));
         BigInteger bI = (bigValue1).subtract(bigValue2);
         BrobInt bR = (brobValue1).subtract(brobValue2);
-        System.out.print(bR.toString().equals(bI.toString()) ? "true  " : "wrong  ");
+        System.out.print(bR.toString().equals(bI.toString()) ? "correct  " : "wrong  ");
         System.out.println(bigValue1.toString()  + " - " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
       }
       System.out.println("\n");
@@ -587,7 +590,7 @@
         BigInteger bigValue2 = bigStartingPoint.add(BigInteger.valueOf((long)(rand2 * scalingFactor)));
         BigInteger bI = (bigValue1).multiply(bigValue2);
         BrobInt bR = (brobValue1).multiply(brobValue2);
-        System.out.print(bR.toString().equals(bI.toString()) ? "true  " : "wrong  ");
+        System.out.print(bR.toString().equals(bI.toString()) ? "correct  " : "wrong  ");
         System.out.println(bigValue1.toString()  + " x " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
       }
       System.out.println("\n");
@@ -605,7 +608,7 @@
         }
         BigInteger bI = (bigValue1).divide(bigValue2);
         BrobInt bR = (brobValue1).divide(brobValue2);
-        System.out.print(bR.toString().equals(bI.toString()) ? "true  " : "wrong  ");
+        System.out.print(bR.toString().equals(bI.toString()) ? "correct  " : "wrong  ");
         System.out.println(bigValue1.toString()  + " / " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
       }
       System.out.println("\n");
@@ -623,7 +626,7 @@
         }
         BigInteger bI = (bigValue1).remainder(bigValue2);
         BrobInt bR = (brobValue1).remainder(brobValue2);
-        System.out.print(bR.toString().equals(bI.toString()) ? "true  " : "wrong  ");
+        System.out.print(bR.toString().equals(bI.toString()) ? "correct  " : "wrong  ");
         System.out.println(bigValue1.toString()  + " mod " + bigValue2.toString() + " = " + bI.toString() + " -> " + bR.toString() + "\n");
       }
     

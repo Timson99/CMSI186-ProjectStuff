@@ -23,7 +23,6 @@ public class BrobInt {
     public static final BrobInt ZERO = new BrobInt("0");
     public static final BrobInt ONE = new BrobInt("1");
     public static final BrobInt TEN = new BrobInt("10");
- 
     private ArrayList<Integer> digitStorage = new ArrayList<Integer>();
     private int storageSize;
     private boolean isNegative = false;
@@ -81,7 +80,6 @@ public class BrobInt {
             return abs(new BrobInt(toString())).addPositives(abs(new BrobInt(value.toString())));
         }
         else if(abs(new BrobInt(toString())).compareTo(abs(new BrobInt(value.toString()))) == 1) {
-            //System.out.println("Test1");
             if(isNegative) {
                 BrobInt temp = abs(new BrobInt(toString())).subtractPositives(abs(new BrobInt(value.toString())));
                 return new BrobInt("-" + temp.toString());
@@ -91,7 +89,6 @@ public class BrobInt {
             }
         }
         else {
-            //System.out.println("Test2");
             if(!(isNegative)) {
                 BrobInt temp = abs(new BrobInt(toString())).subtractPositives(abs(new BrobInt(value.toString())));
                 return new BrobInt("-" + temp.toString());
@@ -100,7 +97,6 @@ public class BrobInt {
                 return abs(new BrobInt(toString())).subtractPositives(abs(new BrobInt(value.toString())));
             }  
         }
-       
     }
     
    /** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -110,15 +106,15 @@ public class BrobInt {
      *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
     public BrobInt addPositives( BrobInt value ) {
         int size = (storageSize > value.digitStorage.size()) ? value.digitStorage.size() : storageSize; 
-        int tensPlace = 0;
+        int carryOver = 0;
         int counter = 0;
         String strTemp = "";
         if(size == 0) {
             return ZERO;
         }
         for( int index = size - 1; index >= 0; index-- ) {
-            int rowAddition = value.digitStorage.get(value.digitStorage.size() - 1 - counter) + digitStorage.get(digitStorage.size() - 1 - counter) + tensPlace;
-            tensPlace = (int)(rowAddition/10);
+            int rowAddition = value.digitStorage.get(value.digitStorage.size() - 1 - counter) + digitStorage.get(digitStorage.size() - 1 - counter) + carryOver;
+            carryOver = (int)(rowAddition/10);
             rowAddition = (int)rowAddition%10;
             strTemp = rowAddition + strTemp + "";
             counter++;
@@ -126,9 +122,9 @@ public class BrobInt {
         ArrayList<Integer> largerBrobIntList = ((storageSize > value.digitStorage.size()) ? digitStorage : value.digitStorage);
         int currentIndex = largerBrobIntList.size() - counter - 1;
         for( int index = currentIndex; index >= 0; index-- ) {
-            if(tensPlace != 0) {
-                int temp = largerBrobIntList.get(index) + tensPlace;
-                tensPlace = (temp == 10 ? 1 : 0);
+            if(carryOver != 0) {
+                int temp = largerBrobIntList.get(index) + carryOver;
+                carryOver = (temp == 10 ? 1 : 0);
                 temp = (temp == 10 ? 0 : temp);
                 strTemp = temp  + strTemp + "";
             }
@@ -136,8 +132,8 @@ public class BrobInt {
                 strTemp = largerBrobIntList.get(index)  + strTemp + "";
             }
         }
-        if(tensPlace != 0) {
-            strTemp = tensPlace + strTemp + "";
+        if(carryOver != 0) {
+            strTemp = carryOver + strTemp + "";
         }
         if(strTemp == "" || strTemp == " ") {
             return ZERO;
@@ -193,20 +189,19 @@ public class BrobInt {
         ArrayList<Integer> largerValueBrobIntList = compareTo(value) == 1 ? digitStorage : value.digitStorage;
         ArrayList<Integer> smallerValueBrobIntList = compareTo(value) == 1 ? value.digitStorage : digitStorage;
         int size = smallerValueBrobIntList.size() < largerValueBrobIntList.size() ? smallerValueBrobIntList.size() : largerValueBrobIntList.size();
-        int tensPlace = 0;
+        int carryOver = 0;
         int counter = 0;
         for( int index = size - 1; index >= 0; index-- ) {
             if(compareTo(value) == 1 ? true : false) {
-                rowSubtraction = largerValueBrobIntList.get(digitStorage.size() - 1 - counter) - smallerValueBrobIntList.get(value.digitStorage.size() - 1 - counter) - tensPlace;
+                rowSubtraction = largerValueBrobIntList.get(digitStorage.size() - 1 - counter) - smallerValueBrobIntList.get(value.digitStorage.size() - 1 - counter) - carryOver;
             }
             else {
-                rowSubtraction = largerValueBrobIntList.get(value.digitStorage.size() - 1 - counter) - smallerValueBrobIntList.get(digitStorage.size() - 1 - counter) - tensPlace;
+                rowSubtraction = largerValueBrobIntList.get(value.digitStorage.size() - 1 - counter) - smallerValueBrobIntList.get(digitStorage.size() - 1 - counter) - carryOver;
             }
-            tensPlace = 0;
+            carryOver = 0;
             if(rowSubtraction < 0 && !(index == 0 && storageSize == value.digitStorage.size())) {
                 rowSubtraction += 10;
-                tensPlace = 1;
-                
+                carryOver = 1;
             }
             calculation.digitStorage.add(0, rowSubtraction);
             counter++;
@@ -214,14 +209,14 @@ public class BrobInt {
         ArrayList<Integer> largerBrobIntList = ((storageSize > value.digitStorage.size()) ? digitStorage : value.digitStorage);
         int currentIndex = largerBrobIntList.size() - counter - 1;
         for( int index = currentIndex; index >= 0; index-- ) {
-            if(tensPlace != 0) {
-                int temp = largerBrobIntList.get(index) - tensPlace;
+            if(carryOver != 0) {
+                int temp = largerBrobIntList.get(index) - carryOver;
                 if(temp < 0) {
                     temp += 10;
-                    tensPlace++;
+                    carryOver++;
                 }
                 calculation.digitStorage.add(0, temp);
-                tensPlace--;
+                carryOver--;
             }
             else {
                 calculation.digitStorage.add(0, largerBrobIntList.get(index));
@@ -265,22 +260,22 @@ public class BrobInt {
         ArrayList<Integer>smallerBrobIntList = (storageSize > value.digitStorage.size()) ? value.digitStorage : digitStorage;
         int counter = 0; 
         for( int index = smallerBrobIntList.size() - 1; index >= 0; index-- ) {
-            int tensPlace = 0;
+            int carryOver = 0;
             additionValues.add(0, new BrobInt("0"));
             additionValues.get(0).digitStorage.remove(0);
             for(int x = 0; x < counter; x++) {
                 additionValues.get(0).digitStorage.add(0, 0);
             }
             for( int bigIndex = largerBrobIntList.size() - 1; bigIndex >= 0; bigIndex-- ) {
-                int temp = largerBrobIntList.get(bigIndex) * smallerBrobIntList.get(index) + tensPlace;
+                int temp = largerBrobIntList.get(bigIndex) * smallerBrobIntList.get(index) + carryOver;
                 
-                tensPlace = (int)(temp/10);
+                carryOver = (int)(temp/10);
                 temp = (int)(temp%10);
                 additionValues.get(0).digitStorage.add(0, temp);
                 
             }
-            if(tensPlace != 0) {
-                additionValues.get(0).digitStorage.add(0, tensPlace);
+            if(carryOver != 0) {
+                additionValues.get(0).digitStorage.add(0, carryOver);
             }
             counter++;
         } 
@@ -317,18 +312,21 @@ public class BrobInt {
      *  @return BrobInt that is the remainder of division of this BrobInt by the one passed in
      *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
     public BrobInt remainder( BrobInt value ) {
-        if(abs(new BrobInt(toString())).compareTo(abs(new BrobInt(value.toString()))) == -1)
+        if(abs(new BrobInt(toString())).compareTo(abs(new BrobInt(value.toString()))) == -1) {
             return new BrobInt(toString());
-        
+        }
         BrobInt calculation = removeZeroes(abs(new BrobInt(toString())).subtractPositives(abs(new BrobInt(value.toString())).multiply(abs(new BrobInt(toString())).divide(abs(new BrobInt(value.toString()))))));
-        
-       if(isNegative != value.isNegative) {
+        if(isNegative != value.isNegative) {
             return new BrobInt("-" + abs(calculation).toString()); 
         }
         return new BrobInt(abs(calculation).toString()); 
     }
     
-    
+   /** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     *  Method to Remove excess zeros at the beginning of a BrobInt
+     *  @param  value        BrobInt to divide this one by
+     *  @return BrobInt that has all excess zeros removed
+     *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
     public BrobInt removeZeroes(BrobInt value) {
         while(value.digitStorage.size() != 0 && value.digitStorage.get(0) == 0) {
             value.digitStorage.remove(0);
@@ -363,6 +361,7 @@ public class BrobInt {
              return 0;
          }
     }
+    
      
    /** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      *  Method to return a String representation of this BrobInt
@@ -403,10 +402,7 @@ public class BrobInt {
      *  @return boolean  that is true if they are equal and false otherwise
      *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
     public boolean equals( Object x ) {
-        if(x.toString().equals(toString())) {
-            return true;
-        }
-        return false;
+        return x.toString().equals(toString());
     }
     
    /** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -418,7 +414,6 @@ public class BrobInt {
         String strValue = "" + value;
         BrobInt br = new BrobInt(strValue);
         return br;
-        
     } 
     
    /** ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
