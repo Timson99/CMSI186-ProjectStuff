@@ -104,7 +104,7 @@ public class DynamicChangeMaker {
      * These values are passed to method makeChangeWithDynamicProgramming() to be further validated and optimized
      * @see makeChangeWithDynamicProgramming()
      */
-    public static void main( String args[] ) {'
+    public static void main( String args[] ) {
         String[] denominations;
         int[] intArr = new int[0];
         int target = 0;
