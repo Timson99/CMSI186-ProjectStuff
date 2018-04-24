@@ -96,12 +96,15 @@ public class DynamicChangeMaker {
     }
     
    /**
-     *  main method just calls all the individual test methods
-     *   test_thisthing(), test_thatthing(), test_theotherthing() and so on
-     *   each test_whatever handles its own output and keeps adding to the pass/fail
-     *   at the end, main prints out a tally of how many tests run/passed
+     *  main method to handle command line arguments.
+     * Takes denominations in the '#,#,#,#,...' format as arg[0]
+     * Takes target as arg[1]
+     * Program checks to make sure there is only two arguments and that the arguments are convertible to int values
+     * After checking for argument validity, the denominations are turned into an int array and the target becomes an int
+     * These values are passed to method makeChangeWithDynamicProgramming() to be further validated and optimized
+     * @see makeChangeWithDynamicProgramming()
      */
-    public static void main( String args[] ) {
+    public static void main( String args[] ) {'
         String[] denominations;
         int[] intArr = new int[0];
         int target = 0;
