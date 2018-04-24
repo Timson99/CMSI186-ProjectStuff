@@ -18,62 +18,72 @@
 public class DynamicChangeMaker {
     
    /** 
-     *   Constructor takes a string and assigns it to the internal storage as a ArrayList of Integers called digitStorage,
-     *   checks for a sign character and handles that accordingly;  it then checks to see if it's all valid digits,
-     *   sets isNegative and storageSize fields to appropriate values
-     *  @param  value  String value to make into a BrobInt
-     */
-     
+     *   Constructor that calls the constructor of superclass: java.lang.Object
+     */ 
     public DynamicChangeMaker() {
         super();
     }
     
+   /** 
+     *   Method that checks for bad data.
+     *   If all data is acceptable, this method runs evaluateTupleTable() with the same parameters
+     *   @see evaluateTupleTable()
+     *   @param  coins  int arrayof coin denominations
+     *   @param  target int representing target value
+     *   @return Tuple  result of evaluate Tuple Table. If parameters contain bad data, returns an Impossible Tuple
+     */
     public static Tuple makeChangeWithDynamicProgramming( int[] coins, int target ) {
         boolean willRun = true;
-        outer: for(int x = 0; x < coins.length; x++) {
-                    if(coins[x] == 0 || coins[x] < 0) {
-                    System.out.println("BAD DATA");
-                    willRun = false;
-                    break outer;
+        if( coins.length <= 1 ) {
+            System.out.println("BAD DATA: Too few denominations");
+        }
+        outer: for( int x = 0; x < coins.length; x++ ) {
+                    if( target < 1 || coins[x] < 1 ) {
+                        System.out.println("BAD DATA: Can't have zero/negative target/demoninations");
+                        willRun = false;
+                        break;
                     }
-                    for(int y = 0; y < coins.length; y++) {
-                        if(x != y && coins[x] == coins[y]) {
-                            System.out.println("BAD DATA");
+                    for( int y = 0; y < coins.length; y++ ) {
+                        if( x != y && coins[x] == coins[y] ) {
+                            System.out.println("BAD DATA: No Doubles Allowed");
                             willRun = false;
                             break outer;
                         }
                     }
                 }
-        if(willRun)
-            return evaluateTupleTable(coins, target);
-        
+        if( willRun ) {
+            return evaluateTupleTable( coins, target );
+        }
         return Tuple.IMPOSSIBLE; 
     }
     
-    
-    
-    
+   /** 
+     *   Method that runs the optimal change algorithm on valid coins and target parameters
+     *   @param  coins  int array of coin denominations
+     *   @param  target int representing target value
+     *   @return  Tuple  optimal number of each coin denomination, stored as a Tuple
+     */
     public static Tuple evaluateTupleTable( int[] coins, int target ) {
         Tuple[][] tupleTable = new Tuple[coins.length][target + 1];
-        for(int i=0; i < tupleTable.length; i++) { 
-            inside: for(int j = 0; j < target + 1; j++) {
-                if(j == 0) {
-                    tupleTable[i][j] = new Tuple(coins.length);
-                    continue inside;
+        for( int i=0; i < tupleTable.length; i++ ) { 
+            for( int j = 0; j < target + 1; j++ ) {
+                if( j == 0 ) {
+                    tupleTable[i][j] = new Tuple( coins.length );
+                    continue;
                 }
-                if(j/coins[i] < 1 || j < coins[i] || tupleTable[i][j-coins[i]].isImpossible()) { 
-                    if(i > 0  && !tupleTable[i-1][j].isImpossible()){
+                if( j/coins[i] < 1 || j < coins[i] || tupleTable[i][j-coins[i]].isImpossible() ) { 
+                    if( i > 0  && !tupleTable[i-1][j].isImpossible() ){
                        tupleTable[i][j] = tupleTable[i-1][j];
                     }
                     else {
                        tupleTable[i][j] = Tuple.IMPOSSIBLE;
                     }
                 }
-                else {
-                    tupleTable[i][j] = new Tuple(coins.length);
-                    tupleTable[i][j].setElement(i,1);
-                    Tuple temp = tupleTable[i][j].add(tupleTable[i][j-coins[i]]);
-                    if(i != 0 && !tupleTable[i-1][j].isImpossible() && temp.total() > tupleTable[i-1][j].total()) {
+                else { 
+                    tupleTable[i][j] = new Tuple( coins.length );
+                    tupleTable[i][j].setElement( i , 1 );
+                    Tuple temp = tupleTable[i][j].add( tupleTable[i][j-coins[i]] );
+                    if( i != 0 && !tupleTable[i-1][j].isImpossible() && temp.total() > tupleTable[i-1][j].total() ) {
                         tupleTable[i][j] = tupleTable[i-1][j];
                     }
                     else {
@@ -82,38 +92,40 @@ public class DynamicChangeMaker {
                 }
             }
         } 
-        /*for(int i=0; i < tupleTable.length; i++) { 
-            System.out.println("");
-            for(int j = 0; j < target + 1; j++) {
-                    System.out.print(tupleTable[i][j]);
-                }
-            } */
-            
-        
-        return tupleTable[coins.length - 1][target];
+        return tupleTable[ coins.length - 1 ][target];
     }
     
-    
-    public static void main(String args[]) {
+   /**
+     *  main method just calls all the individual test methods
+     *   test_thisthing(), test_thatthing(), test_theotherthing() and so on
+     *   each test_whatever handles its own output and keeps adding to the pass/fail
+     *   at the end, main prints out a tally of how many tests run/passed
+     */
+    public static void main( String args[] ) {
+        String[] denominations;
         int[] intArr = new int[0];
         int target = 0;
         try {
-            intArr = new int[args.length - 1];
-            for(int x = 0; x<args.length - 1 ; x++){
-                intArr[x] = Integer.parseInt(args[x]);
+            if( args.length != 2 ) {
+                throw new NumberFormatException();
             }
-            target = Integer.parseInt(args[args.length-1]);
+            denominations = args[0].split(",");
+            intArr = new int[denominations.length];
+            for(int x = 0; x < denominations.length; x++){
+                intArr[x] = Integer.parseInt( denominations[x] );
+            }
+            target = Integer.parseInt( args[1] );
             System.out.print("Created demominations ");
-            for(int z : intArr) {
+            for( int z : intArr ) {
                 System.out.print(" " + z + " ");
             }
             System.out.println(" with target " + target);
         }
-        catch(NumberFormatException nfe) {
-            System.out.println("BAD ARGUMENTS");
-            System.out.println(nfe.toString());
+        catch( NumberFormatException nfe ) {
+            System.out.println("BAD DATA: Invalid Digits");
+            System.out.println( nfe.toString() );
             System.exit(0);
         }
-        System.out.print(makeChangeWithDynamicProgramming(intArr,target));
+        System.out.print( makeChangeWithDynamicProgramming( intArr , target ) );
     }
  }
