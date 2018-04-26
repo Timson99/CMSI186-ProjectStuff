@@ -67,7 +67,7 @@ public class DynamicChangeMaker {
         Tuple[][] tupleTable = new Tuple[coins.length][target + 1];
         for( int i=0; i < tupleTable.length; i++ ) { 
             for( int j = 0; j < target + 1; j++ ) {
-                if( j == 0 ) {
+                if( j == 0 ) { 
                     tupleTable[i][j] = new Tuple( coins.length );
                     continue;
                 }
